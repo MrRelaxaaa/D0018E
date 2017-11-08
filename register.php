@@ -40,30 +40,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
 
         // Close statement
-      //  mysqli_stmt_close($stmt);
+       // mysqli_stmt_close($stmt);
     }
 
     // Validate password
     if(empty(trim($_POST['password']))){
         $password_err = "Please enter a password.";
-    } elseif(strlen(trim($_POST['password'])) < 6){
-        $password_err = "Password must have atleast 6 characters.";
+    } elseif(strlen(trim($_POST['password'])) < 3){
+        $password_err = "Password must have atleast 3 characters.";
     } else{
         $password = trim($_POST['password']);
     }
 
-    // Validate confirm password
-    if(empty(trim($_POST["confirm_password"]))){
-        $confirm_password_err = 'Please confirm password.';
-    } else{
-        $confirm_password = trim($_POST['confirm_password']);
-        if($password != $confirm_password){
-            $confirm_password_err = 'Password did not match.';
-        }
-    }
-
+	
     // Check input errors before inserting in database
-    if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
+    if(empty($username_err) && empty($password_err)){
 
         // Prepare an insert statement
         $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
@@ -74,15 +65,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             // Set parameters
             $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            $param_password = $password; //password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
-                header("location: login.php");
+                header("location: login.html");
             } else{
-                echo "Something went wrong. Please try again later.";
+                echo "Login error wtf?";
             }
+			
         }
 
         // Close statement
@@ -94,43 +86,62 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 ?>
 
+<!-- Kommentar -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
-</head>
-<body>
-    <div class="wrapper">
-        <h2>Sign Up</h2>
-        <p>Please fill this form to create an account.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username:<sup>*</sup></label>
-                <input type="text" name="username"class="form-control" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
-            </div>
-            <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Password:<sup>*</sup></label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
-                <span class="help-block"><?php echo $password_err; ?></span>
-            </div>
-            <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                <label>Confirm Password:<sup>*</sup></label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
-                <span class="help-block"><?php echo $confirm_password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Submit">
-                <input type="reset" class="btn btn-default" value="Reset">
-            </div>
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
-        </form>
-    </div>
-</body>
+<html lang="sv">
+	<head>
+		<link rel="stylesheet" href="test.css">
+		<meta charset="utf-8">
+		<title>test</title>
+	</head>
+	<body>
+    <div class="nav-box">
+			<div class="nav-image">
+			</div>
+			<div class="nav-bar">
+				<ul>
+	  <li><a class="active" href="#home">Home</a></li>
+	  <li><a href="#news">News</a></li>
+	  <li><a href="#contact">Contact</a></li>
+	  <li><a href="#about">About</a></li>
+	</ul>
+			</div>
+		</div>
+		<div class="bread-container">
+			<br>
+			<br>
+			<hr>
+			<br>
+			<br>
+			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+				<fieldset>
+					<legend>Register</legend>
+					<input type='hidden' name='submitted' id='submitted' value='1'/>
+					<!-- <label for='name' >Your Full Name*: </label>
+					<input type='text' name='name' id='name' maxlength="50" />
+					<label for='email' >Email Address*:</label>
+					<input type='text' name='email' id='email' maxlength="50" />
+					!-->
+					<label for='username' >Username*:</label>
+					<input type='text' name='username' id='username' value="<?php echo $username; ?>" maxlength="50" />
+				<!--	<span class="help-block"><?php echo $username_err; ?></span> !-->
+					
+					<br>
+					<label for='password' >Password*:</label>
+					<input type='password' name='password' id='password' value="<?php echo $password; ?>" maxlength="50" />
+					<br>
+					<input type='submit' name='Submit' value='Submit' />
+
+				</fieldset>
+			</form>
+			<br>
+			<br>
+			<hr>
+			<br>
+			<br>
+		</div>
+
+	</body>
+</html>
+
 </html>
