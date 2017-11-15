@@ -4,45 +4,43 @@ $username = '';
 $password = '';
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty(trim($_POST["username"]))){
-	
-        
+		//Don't run else statement if no username entered
 } elseif(empty(trim($_POST["password"]))){
+		//See above
 }	else{
 	$sql = "SELECT Uname, Pword FROM logins WHERE (Uname, Pword) = (?, ?)";
 	if($stmt = mysqli_prepare($link, $sql)){
-		
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
-            // Set parameters
+
+            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password); //Bind var to stmt
+            //set parameters from post
             $param_username = trim($_POST["username"]);
 			$param_password = trim($_POST["password"]);
-            // Attempt to execute the prepared statement
+			
+            //Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                /* store result */
+                // store result
                 mysqli_stmt_store_result($stmt);
                 if(mysqli_stmt_num_rows($stmt) == 1){
-                    //$username = trim($_POST["username"]);
 					echo "user found";
 					//mysqli_stmt_close($stmt);
 					/* $sql = "SELECT ID FROM logins where (Uname, Pword) = ($param_username, $param_password)";
 					$stmt = mysqli_prepare($link, $sql);
 					if(mysqli_stmt_execute($stmt)){
-						mysqli_stmt_store_result($stmt);
-						//Return user data
-					}*/
+						
+						//Ekoa data här eller redirecta till ny page
 					
+					}*/
                 } else{
                     echo "User Not Found";
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "error line 38";
             }
 			
             mysqli_stmt_close($stmt);
         }
 	}
 }
-
 ?>
 <!-- Kommentar -->
 <!DOCTYPE html>

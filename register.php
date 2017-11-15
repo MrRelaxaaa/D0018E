@@ -1,24 +1,22 @@
 <?php
-// Include config file
 require_once 'config.php';
-// Define variables and initialize with empty values
 $username = $firstname = $lastname = $email = $address = $password = "";
-$username_err = $password_err = $confirm_password_err = "";
-// Processing form data when form is submitted
+$username_err = $password_err = "";
+//Run on post
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Validate username
+    //Validate username
     if(empty(trim($_POST["username"]))){
         $username_err = "Please enter a username.";
     } else{
-        // Prepare a select statement
+        //Prepare a select statement
 		
         $sql = "SELECT id FROM logins WHERE Uname = ?";
         if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
+            //Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_username);
-            // Set parameters
+            //Set parameters
             $param_username = trim($_POST["username"]);
-            // Attempt to execute the prepared statement
+            //Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 /* store result */
                 mysqli_stmt_store_result($stmt);
@@ -28,66 +26,56 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $username = trim($_POST["username"]);
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "error line 29";
             }
-			
             mysqli_stmt_close($stmt);
         }
-        // Close statement
-       // mysqli_stmt_close($stmt);
     }
-    // Validate password
+    //Validate password
     if(empty(trim($_POST['password']))){
-        $password_err = "Please enter a password.";
+        $password_err = "EnterPW";
     } elseif(strlen(trim($_POST['password'])) < 3){
-        $password_err = "Password must have atleast 3 characters.";
+        $password_err = "pw<3";
     } else{
         $password = trim($_POST['password']);
     }
 
-    // Check input errors before inserting in database
+    //Dont run if validation error
     if(empty($username_err) && empty($password_err)){
-        // Prepare an insert statement
+        //Prepare an insert statement
         $sql = "INSERT INTO logins (Uname, Pword) VALUES (?, ?)";
         if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
+            //Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
-            // Set parameters
+            //Set parameters
             $param_username = $username;
             $param_password = $password; //password_hash($password, PASSWORD_DEFAULT); 
 
 			if(empty($param_username)){
-			echo "fuuuckk";}   
-
-						
-            // Attempt to execute the prepared statement
+			echo "$param_username tom";}   		
+            //Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // Redirect to login page
+                //Redirect to login page
                 header("location: login.php");
             } else{
-                echo "Login error wtf?";
+                echo "Login error line 61";
             }
-
         }
-        // Close statement
+        //Close statement
         mysqli_stmt_close($stmt);
 
 		$sql = "INSERT INTO users (firstname, lastname, email, address) VALUES (?, ?, ?, ?)";
 		if($stmt = mysqli_prepare($link, $sql)){
 			mysqli_stmt_bind_param($stmt, "ssss", $param_firstname, $param_lastname, $param_email, $param_address);
-			
-			
 			$param_firstname = trim($_POST["firstname"]);
 			$param_lastname = trim($_POST["lastname"]);
 			$param_email = trim($_POST["email"]);
 			$param_address = trim($_POST["address"]);
- 
 			 mysqli_stmt_execute($stmt);
 			 mysqli_stmt_close($stmt);
-			 
 		}
     }
-    // Close connection
+    //Close db connection
     mysqli_close($link);
 }
 ?>
