@@ -54,7 +54,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
             // Set parameters
             $param_username = $username;
-            $param_password = $password; //password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            $param_password = $password; //password_hash($password, PASSWORD_DEFAULT); 
+
+			if(empty($param_username)){
+			echo "fuuuckk";}   
+
+						
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
@@ -66,6 +71,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         // Close statement
         mysqli_stmt_close($stmt);
+
+		$sql = "INSERT INTO users (firstname, lastname, email, address) VALUES (?, ?, ?, ?)";
+		if($stmt = mysqli_prepare($link, $sql)){
+			mysqli_stmt_bind_param($stmt, "ssss", $param_firstname, $param_lastname, $param_email, $param_address);
+			
+			
+			$param_firstname = trim($_POST["firstname"]);
+			$param_lastname = trim($_POST["lastname"]);
+			$param_email = trim($_POST["email"]);
+			$param_address = trim($_POST["address"]);
+ 
+			 mysqli_stmt_execute($stmt);
+			 mysqli_stmt_close($stmt);
+			 
+		}
     }
     // Close connection
     mysqli_close($link);
