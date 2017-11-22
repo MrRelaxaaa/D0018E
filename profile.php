@@ -1,3 +1,7 @@
+<?php
+$firstname = "Jens";
+$lastname = "Gertzell";
+$address = "Porsögården"; ?>
 <!-- Kommentar -->
 <!DOCTYPE html>
 <html lang="sv">
@@ -6,7 +10,7 @@
 		<link rel="stylesheet" href="profile.css">
 		<link rel="stylesheet" href="login-register.css">
 		<meta charset="utf-8">
-		<title>test</title>
+		<title>profile</title>
 	</head>
 	<body>
 	<div class="nav">
@@ -37,13 +41,11 @@
 				</div>
 				<div class="profile-table">
 		          <form action="" method="post">
-		          <input type='text' placeholder="Firstname" name="firstname" id='firstname' maxlength="50" value="" />
+		          <input type='text' placeholder=<?php echo $firstname?> name="firstname" id='firstname' maxlength="50" value="" />
 							<br><br>
-							<input type='text' placeholder="Lastname" name="firstname" id='firstname' maxlength="50" value="" />
+							<input type='text' placeholder=<?php echo $lastname?> name="lastname" id='lastname' maxlength="50" value="" />
 							<br><br>
-							<input type='text' placeholder="Address" name="firstname" id='firstname' maxlength="50" value="" />
-							<br><br>
-							<input type='text' placeholder="City" name="firstname" id='firstname' maxlength="50" value="" />
+							<input type='text' placeholder=<?php echo $address?> name="address" id='address' maxlength="50" value="" />
 				</div>
 				<input type="submit" name="Submit" class="profile-edit-button" value="Sumbit changes"/>
       </div>
