@@ -7,7 +7,7 @@ create table logins (
 )
 
 create table users (
-	Kundnr int PRIMARY KEY AUTO_INCREMENT,
+	Kundnr int PRIMARY KEY,
 	Firstname varchar(255),
 	Lastname varchar(255),
 	Email varchar(255),
