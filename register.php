@@ -9,8 +9,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $username_err = "Please enter a username.";
     } else{
         //Prepare a select statement
-		
-        $sql = "SELECT id FROM logins WHERE Uname = ?";
+        $sql = "SELECT Username FROM logins WHERE Username = ?";
         if($stmt = mysqli_prepare($link, $sql)){
             //Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_username);
@@ -42,12 +41,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     //Dont run if validation error
     if(empty($username_err) && empty($password_err)){
         //Prepare an insert statement
-        $sql = "INSERT INTO logins (Uname, Pword) VALUES (?, ?)";
+        $sql = "INSERT INTO logins (Username, Password) VALUES (?, ?)";
         if($stmt = mysqli_prepare($link, $sql)){
             //Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
             //Set parameters
-            $param_username = $username;
+            $param_username = $username; //trim($_POST["username"]);
             $param_password = $password; //password_hash($password, PASSWORD_DEFAULT); 
 			if(empty($param_username)){
 			echo "$param_username tom";}   		
@@ -61,13 +60,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         //Close statement
         mysqli_stmt_close($stmt);
-		$sql = "INSERT INTO users (firstname, lastname, email, address) VALUES (?, ?, ?, ?)";
+		
+		//Insert userinfo into users table
+		$param_username = trim($_POST["username"]);
+		$sql = "INSERT INTO users (Kundnr, Firstname, Lastname, Email, Address) VALUES ((select Kundnr from logins where Username = '".$param_username."'), ?, ?, ?, ?)";
 		if($stmt = mysqli_prepare($link, $sql)){
 			mysqli_stmt_bind_param($stmt, "ssss", $param_firstname, $param_lastname, $param_email, $param_address);
 			$param_firstname = trim($_POST["firstname"]);
 			$param_lastname = trim($_POST["lastname"]);
 			$param_email = trim($_POST["email"]);
 			$param_address = trim($_POST["address"]);
+			//$pk = mysqli_fetch_row(mysqli_query($link, "SELECT Kundnr FROM logins WHERE Username = $param"));
 			 mysqli_stmt_execute($stmt);
 			 mysqli_stmt_close($stmt);
 		}

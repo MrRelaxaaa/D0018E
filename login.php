@@ -1,16 +1,17 @@
 <?php
 require_once 'config.php';
-$username = '';
-$password = '';
+$username = "";
+$password = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty(trim($_POST["username"]))){
 		//Don't run else statement if no username entered
 } elseif(empty(trim($_POST["password"]))){
 		//See above
 }	else{
-	$sql = "SELECT Uname, Pword FROM logins WHERE (Uname, Pword) = (?, ?)";
+	$sql = "SELECT Username, Password FROM logins WHERE (Username, Password) = (?, ?)";
 	if($stmt = mysqli_prepare($link, $sql)){
-            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password); //Bind var to stmt
+			//Bind params to stmt ($link + $stmt)
+            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password); 
             //set parameters from post
             $param_username = trim($_POST["username"]);
 			$param_password = trim($_POST["password"]);
@@ -20,23 +21,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // store result
                 mysqli_stmt_store_result($stmt);
                 if(mysqli_stmt_num_rows($stmt) == 1){
-					echo "user found";
-					//mysqli_stmt_close($stmt);
-					/* $sql = "SELECT ID FROM logins where (Uname, Pword) = ($param_username, $param_password)";
-					$stmt = mysqli_prepare($link, $sql);
-					if(mysqli_stmt_execute($stmt)){
+					$query = "SELECT Firstname, Lastname, Address FROM users WHERE Kundnr = (SELECT Kundnr FROM logins WHERE Username = '" . trim($_POST["username"]) . "')";
+					session_start();
+					 
+					$test = (mysqli_query($link, $query));
+						while($kundnr = mysqli_fetch_assoc($test)){
+						//mysqli_fetch_row(
+					 $_SESSION['Firstname'] = $kundnr['Firstname'];
+					 $_SESSION['Lastname'] = $kundnr['Lastname'];
+					 $_SESSION['Address'] = $kundnr['Address'];
+					 echo $_SESSION['firstname'];
+					}
 
-						//Ekoa data här eller redirecta till ny page
-
-					}*/
+					header("location: profile.php");
+						
                 } else{
+					mysqli_stmt_close($stmt);
                     echo "User Not Found";
                 }
             } else{
+				
                 echo "error line 38";
             }
 
-            mysqli_stmt_close($stmt);
+            
         }
 	}
 }

@@ -1,9 +1,7 @@
 <?php
-/* Database credentials. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
 define('DB_SERVER', 'localhost');
-define('DB_USERNAME', '64BxfZq4yBfK');
-define('DB_PASSWORD', 'D0tDYRdE21MU');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
 define('DB_NAME', 'eshop');
 
 /* Attempt to connect to MySQL database */

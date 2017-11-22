@@ -1,7 +1,8 @@
 <?php
-$firstname = "Jens";
-$lastname = "Gertzell";
-$address = "Porsögården"; ?>
+session_start();
+$firstname = $_SESSION['Firstname']/*"Jens"*/;
+$lastname = $_SESSION['Lastname'];
+$address = $_SESSION['Address']; ?>
 <!-- Kommentar -->
 <!DOCTYPE html>
 <html lang="sv">
