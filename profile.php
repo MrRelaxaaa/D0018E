@@ -1,6 +1,6 @@
 <?php
 session_start();
-$firstname = $_SESSION['Firstname']/*"Jens"*/;
+$firstname = $_SESSION['Firstname']/*"Jens"*/;   //HÄR SKA VI HÄMTA DATA FRÅN DB INTE SESSION 
 $lastname = $_SESSION['Lastname'];
 $address = $_SESSION['Address']; ?>
 <!-- Kommentar -->
