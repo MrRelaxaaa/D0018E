@@ -39,7 +39,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $password = trim($_POST['password']);
     }
-
     //Dont run if validation error
     if(empty($username_err) && empty($password_err)){
         //Prepare an insert statement
@@ -50,7 +49,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             //Set parameters
             $param_username = $username;
             $param_password = $password; //password_hash($password, PASSWORD_DEFAULT); 
-
 			if(empty($param_username)){
 			echo "$param_username tom";}   		
             //Attempt to execute the prepared statement
@@ -63,7 +61,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         //Close statement
         mysqli_stmt_close($stmt);
-
 		$sql = "INSERT INTO users (firstname, lastname, email, address) VALUES (?, ?, ?, ?)";
 		if($stmt = mysqli_prepare($link, $sql)){
 			mysqli_stmt_bind_param($stmt, "ssss", $param_firstname, $param_lastname, $param_email, $param_address);
@@ -79,16 +76,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     mysqli_close($link);
 }
 ?>
-
 <!-- Kommentar -->
 <!DOCTYPE html>
 <html lang="sv">
 	<head>
-		<link rel="stylesheet" href="test.css">
+		<link rel="stylesheet" href="main.css">
+		<link rel="stylesheet" href="login-register.css">
 		<meta charset="utf-8">
 		<title>test</title>
 	</head>
 	<body>
+	<div class="nav">
+		<div class="dropdown">
+			<span><a href="home.php"><img src="logo.svg" height="50px" width="50px"/></a></span>
+			<div class="dropdown-content">
+				<a href="login.php">Login</a><br>
+				<a href="shop.php">Shop</a>
+			</div>
+		</div>
+		<div class="dropdown2">
+			<span><a href="#"><img src="profile.png" height="50px" width="50px"/></a></span>
+			<div class="dropdown-content2">
+				<a href="#">Profile</a><br>
+				<a href="#">Logout</a>
+			</div>
+		</div>
+		<div class="cart">
+			<a href="#"><img src="basket.ico" height="50px" width="50px"/></a>
+		</div>
+	</div>
 		<div class="bread-container">
       <div class="registration-box">
         <div class="registration-holder">

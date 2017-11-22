@@ -10,12 +10,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }	else{
 	$sql = "SELECT Uname, Pword FROM logins WHERE (Uname, Pword) = (?, ?)";
 	if($stmt = mysqli_prepare($link, $sql)){
-
             mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password); //Bind var to stmt
             //set parameters from post
             $param_username = trim($_POST["username"]);
 			$param_password = trim($_POST["password"]);
-			
+
             //Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // store result
@@ -26,9 +25,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 					/* $sql = "SELECT ID FROM logins where (Uname, Pword) = ($param_username, $param_password)";
 					$stmt = mysqli_prepare($link, $sql);
 					if(mysqli_stmt_execute($stmt)){
-						
+
 						//Ekoa data här eller redirecta till ny page
-					
+
 					}*/
                 } else{
                     echo "User Not Found";
@@ -36,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "error line 38";
             }
-			
+
             mysqli_stmt_close($stmt);
         }
 	}
@@ -46,12 +45,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <!DOCTYPE html>
 <html lang="sv">
 	<head>
-		<link rel="stylesheet" href="test.css">
+		<link rel="stylesheet" href="main.css">
+		<link rel="stylesheet" href="login-register.css">
 		<meta charset="utf-8">
 		<title>test</title>
 	</head>
 	<body>
-
+	<div class="nav">
 		<div class="dropdown">
 			<span><a href="home.php"><img src="logo.svg" height="50px" width="50px"/></a></span>
 			<div class="dropdown-content">
@@ -60,12 +60,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			</div>
 		</div>
 		<div class="dropdown2">
-			<span><a href="#"><img src="profile.png" height="40px" width="40px"/></a></span>
+			<span><a href="#"><img src="profile.png" height="50px" width="50px"/></a></span>
 			<div class="dropdown-content2">
-				<a href="#">Profile</a><br>
+				<a href="profile.php">Profile</a><br>
 				<a href="#">Logout</a>
 			</div>
 		</div>
+		<div class="cart">
+			<a href="#"><img src="basket.ico" height="50px" width="50px"/></a>
+		</div>
+	</div>
 		<div class="bread-container">
       <div class="login-box">
         <div class="login-holder">
@@ -83,11 +87,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 					</form>
         </div>
       </div>
-		</div>
-		<div class="cart-dropup">
-			<span><a href="#"><img src="cart.png" height="40px" width="40px"/></a></span>
-			<div class="dropup-content">
-			</div>
 		</div>
 	</body>
 </html>
