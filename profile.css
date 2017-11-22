@@ -1,0 +1,47 @@
+.profile-edit{
+  padding: 1%;
+  width: 30%;
+  height: 60%;
+  margin-left: 33%;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  background-color: white;
+}
+
+.profile-icon{
+  float: left;
+  width: 25%;
+  height: 20%;
+}
+
+.profile-edit-button{
+  margin-left: 2%;
+  border-radius: 10px;
+  display: inline-block;
+  vertical-align: bottom;
+  color: white;
+  font-size: 14px;
+  font-family: sans-serif;
+  font-variant: small-caps;
+  width: 50%;
+  background-color: #4CAF50;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-table{
+  padding: 2%;
+  float: left;
+  height: 80%;
+  width: 70%;
+}
+
+.vl {
+  margin-top: 2%;
+  float: left;
+  border-left: 4px solid #4CAF50;
+  height: 68%;
+}

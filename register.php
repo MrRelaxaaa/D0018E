@@ -1,136 +1,139 @@
 <?php
-// Include config file
 require_once 'config.php';
-
-// Define variables and initialize with empty values
-$username = $password = $confirm_password = "";
-$username_err = $password_err = $confirm_password_err = "";
-
-// Processing form data when form is submitted
+$username = $firstname = $lastname = $email = $address = $password = "";
+$username_err = $password_err = "";
+//Run on post
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-    // Validate username
+    //Validate username
     if(empty(trim($_POST["username"]))){
         $username_err = "Please enter a username.";
     } else{
-        // Prepare a select statement
-        $sql = "SELECT id FROM users WHERE username = ?";
-
+        //Prepare a select statement
+        $sql = "SELECT Username FROM logins WHERE Username = ?";
         if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
+            //Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_username);
-
-            // Set parameters
+            //Set parameters
             $param_username = trim($_POST["username"]);
-
-            // Attempt to execute the prepared statement
+            //Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 /* store result */
                 mysqli_stmt_store_result($stmt);
-
                 if(mysqli_stmt_num_rows($stmt) == 1){
-                    $username_err = "This username is already taken.";
+                    $username_err = "UserNIsTaken";
                 } else{
                     $username = trim($_POST["username"]);
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "error line 29";
             }
             mysqli_stmt_close($stmt);
         }
-
-        // Close statement
-      //  mysqli_stmt_close($stmt);
     }
-
-    // Validate password
+    //Validate password
     if(empty(trim($_POST['password']))){
-        $password_err = "Please enter a password.";
-    } elseif(strlen(trim($_POST['password'])) < 6){
-        $password_err = "Password must have atleast 6 characters.";
+        $password_err = "EnterPW";
+    } elseif(strlen(trim($_POST['password'])) < 3){
+        $password_err = "pw<3";
     } else{
         $password = trim($_POST['password']);
     }
-
-    // Validate confirm password
-    if(empty(trim($_POST["confirm_password"]))){
-        $confirm_password_err = 'Please confirm password.';
-    } else{
-        $confirm_password = trim($_POST['confirm_password']);
-        if($password != $confirm_password){
-            $confirm_password_err = 'Password did not match.';
-        }
-    }
-
-    // Check input errors before inserting in database
-    if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
-
-        // Prepare an insert statement
-        $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-
+    //Dont run if validation error
+    if(empty($username_err) && empty($password_err)){
+        //Prepare an insert statement
+        $sql = "INSERT INTO logins (Username, Password) VALUES (?, ?)";
         if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
+            //Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
-
-            // Set parameters
-            $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
-
-            // Attempt to execute the prepared statement
+            //Set parameters
+            $param_username = $username; //trim($_POST["username"]);
+            $param_password = $password; //password_hash($password, PASSWORD_DEFAULT); 
+			if(empty($param_username)){
+			echo "$param_username tom";}   		
+            //Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // Redirect to login page
+                //Redirect to login page
                 header("location: login.php");
             } else{
-                echo "Something went wrong. Please try again later.";
+                echo "Login error line 61";
             }
         }
-
-        // Close statement
+        //Close statement
         mysqli_stmt_close($stmt);
+		
+		//Insert userinfo into users table
+		$param_username = trim($_POST["username"]);
+		$sql = "INSERT INTO users (Kundnr, Firstname, Lastname, Email, Address) VALUES ((select Kundnr from logins where Username = '".$param_username."'), ?, ?, ?, ?)";
+		if($stmt = mysqli_prepare($link, $sql)){
+			mysqli_stmt_bind_param($stmt, "ssss", $param_firstname, $param_lastname, $param_email, $param_address);
+			$param_firstname = trim($_POST["firstname"]);
+			$param_lastname = trim($_POST["lastname"]);
+			$param_email = trim($_POST["email"]);
+			$param_address = trim($_POST["address"]);
+			//$pk = mysqli_fetch_row(mysqli_query($link, "SELECT Kundnr FROM logins WHERE Username = $param"));
+			 mysqli_stmt_execute($stmt);
+			 mysqli_stmt_close($stmt);
+		}
     }
-
-    // Close connection
+    //Close db connection
     mysqli_close($link);
 }
 ?>
-
+<!-- Kommentar -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
-</head>
-<body>
-    <div class="wrapper">
-        <h2>Sign Up</h2>
-        <p>Please fill this form to create an account.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username:<sup>*</sup></label>
-                <input type="text" name="username"class="form-control" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
-            </div>
-            <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Password:<sup>*</sup></label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
-                <span class="help-block"><?php echo $password_err; ?></span>
-            </div>
-            <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                <label>Confirm Password:<sup>*</sup></label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
-                <span class="help-block"><?php echo $confirm_password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Submit">
-                <input type="reset" class="btn btn-default" value="Reset">
-            </div>
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
+<html lang="sv">
+	<head>
+		<link rel="stylesheet" href="main.css">
+		<link rel="stylesheet" href="login-register.css">
+		<meta charset="utf-8">
+		<title>test</title>
+	</head>
+	<body>
+	<div class="nav">
+		<div class="dropdown">
+			<span><a href="home.php"><img src="logo.svg" height="50px" width="50px"/></a></span>
+			<div class="dropdown-content">
+				<a href="login.php">Login</a><br>
+				<a href="shop.php">Shop</a>
+			</div>
+		</div>
+		<div class="dropdown2">
+			<span><a href="#"><img src="profile.png" height="50px" width="50px"/></a></span>
+			<div class="dropdown-content2">
+				<a href="#">Profile</a><br>
+				<a href="#">Logout</a>
+			</div>
+		</div>
+		<div class="cart">
+			<a href="#"><img src="basket.ico" height="50px" width="50px"/></a>
+		</div>
+	</div>
+		<div class="bread-container">
+      <div class="registration-box">
+        <div class="registration-holder">
+          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+          <input type='text' placeholder="firstname" name="firstname" id='firstname' maxlength="50" value="<?php echo $firstname; ?>" required/>
+          <br>
+          <br>
+          <input type='text' placeholder="lastname" name="lastname" id='lastname' maxlength="50" value="<?php echo $lastname; ?>" required/>
+          <br>
+          <br>
+          <input type='text' placeholder="username" name="username" id='username' maxlength="50" value="<?php echo $username; ?>" required/>
+					<br>
+          <br>
+          <input type='password' placeholder="password" name="password" id='password' maxlength="50" value="<?php echo $password; ?>" required/>
+					<br>
+          <br>
+          <input type='text' placeholder="e-mail" name="email" id='email' maxlength="50" value="<?php echo $email; ?>" required/>
+					<br>
+          <br>
+          <input type='text' placeholder="address" name="address" id='address' maxlength="50" value="<?php echo $address; ?>" required/>
+					<br>
+          <br>
+          <input type="submit" name="Submit" class="button" value="Register">
         </form>
-    </div>
-</body>
+        </div>
+      </div>
+		</div>
+	</body>
 </html>

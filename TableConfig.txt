@@ -1,0 +1,59 @@
+create database eshop
+
+create table logins (
+	Kundnr int PRIMARY KEY AUTO_INCREMENT,
+	Username varchar(255),
+	Password varchar(255)
+)
+
+create table users (
+	Kundnr int PRIMARY KEY AUTO_INCREMENT,
+	Firstname varchar(255),
+	Lastname varchar(255),
+	Email varchar(255),
+	Address varchar(255),
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr)
+)
+
+
+create table assets (
+	Produktnr int PRIMARY KEY AUTO_INCREMENT,
+	Name varchar(255),
+	Price int,
+	Rating int,
+	Stock int
+)
+
+create table comments (
+	Produktnr int PRIMARY KEY,
+	Comment varchar(255),
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+)
+
+
+create table assetimages(
+	Produktnr int PRIMARY KEY,
+	url varchar(255),
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+)
+
+create table shoppingcart (
+	Kundnr int PRIMARY KEY,
+	Produktnr int,
+	QTY int,
+	Price int,
+	Date varchar(255),
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr),
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+)
+
+create table userorder (
+	Ordernr int PRIMARY KEY AUTO_INCREMENT,
+	Produktnr int,
+	QTY int,
+	Price int,
+	Date varchar(255),
+	Kundnr int,
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr),
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+)
