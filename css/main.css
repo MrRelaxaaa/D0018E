@@ -1,5 +1,5 @@
 html { height:100%; }
-body { position:absolute; top:0; bottom:0; right:0; left:0; margin: 0 !important; padding: 0 !important; background-image: url("wallpaper.jpg");}
+body { position:absolute; top:0; bottom:0; right:0; left:0; margin: 0 !important; padding: 0 !important; background-image: url("images/wallpaper.jpg");}
 
 .bread-container{
   font-family: sans-serif;
