@@ -1,8 +1,25 @@
 <?php
-session_start();
-$firstname = $_SESSION['Firstname']/*"Jens"*/;   //HÄR SKA VI HÄMTA DATA FRÅN DB INTE SESSION 
-$lastname = $_SESSION['Lastname'];
-$address = $_SESSION['Address']; ?>
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+//var_dump($_SESSION);
+
+$Firstname['Firstname'] = "";
+$Lastname['Lastname'] = "";
+$Addres['Address'] = "";
+$username2 =  $_SESSION['usern'];
+Echo "Inloggad som: " .$username2;
+require_once 'config.php';
+$query = "SELECT Firstname, Lastname, Address FROM users WHERE Kundnr = (SELECT Kundnr FROM logins WHERE Username = '" . $username2 . "')";
+
+$test = (mysqli_query($link, $query));
+	while($kundnr = mysqli_fetch_assoc($test)){
+ 		$Firstname['Firstname'] = $kundnr['Firstname'];
+ 		$Lastname['Lastname'] = $kundnr['Lastname'];
+ 		$Address['Address'] = $kundnr['Address'];
+}
+?>
+
 <!-- Kommentar -->
 <!DOCTYPE html>
 <html lang="sv">
@@ -26,7 +43,7 @@ $address = $_SESSION['Address']; ?>
 			<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
 			<div class="dropdown-content2">
 				<a href="#">Profile</a><br>
-				<a href="#">Logout</a>
+				<a href="logout.php">Logout</a>
 			</div>
 		</div>
 		<div class="cart">
@@ -42,11 +59,11 @@ $address = $_SESSION['Address']; ?>
 				</div>
 				<div class="profile-table">
 		          <form action="" method="post">
-		          <input type='text' placeholder=<?php echo $firstname?> name="firstname" id='firstname' maxlength="50" value="" />
+		          <input type='text' placeholder="<?php echo $Firstname['Firstname']?>" name="firstname" id='firstname' maxlength="50" value="" />
 							<br><br>
-							<input type='text' placeholder=<?php echo $lastname?> name="lastname" id='lastname' maxlength="50" value="" />
+							<input type='text' placeholder="<?php echo $Lastname['Lastname']?>" name="lastname" id='lastname' maxlength="50" value="" />
 							<br><br>
-							<input type='text' placeholder=<?php echo $address?> name="address" id='address' maxlength="50" value="" />
+							<input type='text' placeholder="<?php echo $Address['Address']?>" name="address" id='address' maxlength="50" value="" />
 				</div>
 				<input type="submit" name="Submit" class="profile-edit-button" value="Sumbit changes"/>
       </div>

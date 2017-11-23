@@ -1,7 +1,11 @@
 <?php
 require_once 'config.php';
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
 $username = "";
 $password = "";
+$_SESSION['inloggad'] = "#";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty(trim($_POST["username"]))){
 		//Don't run else statement if no username entered
@@ -11,10 +15,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$sql = "SELECT Username, Password FROM logins WHERE (Username, Password) = (?, ?)";
 	if($stmt = mysqli_prepare($link, $sql)){
 			//Bind params to stmt ($link + $stmt)
-            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password); 
+            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
             //set parameters from post
             $param_username = trim($_POST["username"]);
-			$param_password = trim($_POST["password"]);
+			      $param_password = trim($_POST["password"]);
+            $_SESSION['usern'] = $param_username;
 
             //Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
@@ -22,29 +27,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 mysqli_stmt_store_result($stmt);
                 if(mysqli_stmt_num_rows($stmt) == 1){
 					$query = "SELECT Firstname, Lastname, Address FROM users WHERE Kundnr = (SELECT Kundnr FROM logins WHERE Username = '" . trim($_POST["username"]) . "')";
-					session_start();
-					 
+
+
 					$test = (mysqli_query($link, $query));
 						while($kundnr = mysqli_fetch_assoc($test)){
 						//mysqli_fetch_row(
 					 $_SESSION['Firstname'] = $kundnr['Firstname'];
 					 $_SESSION['Lastname'] = $kundnr['Lastname'];
 					 $_SESSION['Address'] = $kundnr['Address'];
+           $_SESSION['inloggad'] = "/profile.php";
 					 echo $_SESSION['firstname'];
 					}
 
 					header("location: profile.php");
-						
+
                 } else{
 					mysqli_stmt_close($stmt);
                     echo "User Not Found";
                 }
             } else{
-				
+
                 echo "error line 38";
             }
 
-            
+
         }
 	}
 }
@@ -56,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		<link rel="stylesheet" href="css/main.css">
 		<link rel="stylesheet" href="css/login-register.css">
 		<meta charset="utf-8">
-		<title>test</title>
+		<title>profile</title>
 	</head>
 	<body>
 	<div class="nav">
@@ -70,7 +76,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		<div class="dropdown2">
 			<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
 			<div class="dropdown-content2">
-				<a href="profile.php">Profile</a><br>
+				<a href="<?php echo $_session["inlogggad"] ?>">Profile</a><br> <!--  "profile.php" -->
 				<a href="#">Logout</a>
 			</div>
 		</div>

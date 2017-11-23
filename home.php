@@ -1,3 +1,8 @@
+<?php
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+?>
 <!-- Kommentar -->
 <!DOCTYPE html>
 <html lang="sv">
@@ -19,7 +24,7 @@
 				<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
 				<div class="dropdown-content2">
 					<a href="profile.php">Profile</a><br>
-					<a href="#">Logout</a>
+					<a href="logout.php">Logout</a>
 				</div>
 			</div>
 			<div class="cart">
