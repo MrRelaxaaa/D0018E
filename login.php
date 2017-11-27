@@ -38,8 +38,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
            $_SESSION['inloggad'] = "/profile.php";
 					 echo $_SESSION['firstname'];
 					}
-
-					header("location: home.php");
+          echo $_SESSION['usern'];
+          if($_SESSION['usern'] == "root"){
+            header("location: admin.php");
+          }else{
+            header("location: home.php");
+          }
 
                 } else{
 					mysqli_stmt_close($stmt);
