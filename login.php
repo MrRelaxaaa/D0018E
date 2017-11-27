@@ -39,7 +39,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 					 echo $_SESSION['firstname'];
 					}
 
-					header("location: profile.php");
+					header("location: home.php");
 
                 } else{
 					mysqli_stmt_close($stmt);
@@ -62,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		<link rel="stylesheet" href="css/main.css">
 		<link rel="stylesheet" href="css/login-register.css">
 		<meta charset="utf-8">
-		<title>profile</title>
+		<title>Login</title>
 	</head>
 	<body>
 	<div class="nav">

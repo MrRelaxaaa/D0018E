@@ -1,3 +1,6 @@
+<?php
+require 'getItems.php';
+?>
 <!-- Kommentar -->
 <!DOCTYPE html>
 <html lang="sv">
@@ -5,7 +8,7 @@
 		<link rel="stylesheet" href="css/main.css">
 		<link rel="stylesheet" href="css/products.css">
 		<meta charset="utf-8">
-		<title>test</title>
+		<title>Shop</title>
 	</head>
 	<body>
 	<div class="nav">
@@ -28,7 +31,9 @@
 		</div>
 	</div>
 		<div class="bread-container">
-			<figure class="product-container">
+			<!-- getitems php här -->
+			<?php getitems(); ?>
+			<!-- <figure class="product-container">
   			<img src="bikes/bike3.jpg" />
   				<figcaption>
     			<h1>Giant 1</h1>
@@ -38,31 +43,8 @@
     				</div>
 						<br>
 						<input type="submit" name="Submit" class="add-cart" value="Add to cart"/>
-			</figure>
+			</figure> -->
 
-			<figure class="product-container">
-  			<img src="bikes/bike2.jpeg" />
-  				<figcaption>
-    			<h1>Giant 1</h1>
-    				<p>Giant down-hill bike.</p>
-    				<div class="price">
-      				12.499:-
-    				</div>
-						<br>
-						<input type="submit" name="Submit" class="add-cart" value="Add to cart"/>
-			</figure>
-
-			<figure class="product-container">
-  			<img src="bikes/bike3.jpg" />
-  				<figcaption>
-    			<h1>Giant 1</h1>
-    				<p>Giant down-hill bike.</p>
-    				<div class="price">
-      				14.999:-
-    				</div>
-						<br>
-						<input type="submit" name="Submit" class="add-cart" value="Add to cart"/>
-			</figure>
 		</div>
 	</body>
 </html>

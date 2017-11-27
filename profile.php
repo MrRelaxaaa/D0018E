@@ -1,22 +1,31 @@
 <?php
+require_once 'config.php';
+require 'getProfileInfo.php';
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 //var_dump($_SESSION);
-
-$Firstname['Firstname'] = "";
-$Lastname['Lastname'] = "";
-$Addres['Address'] = "";
 $username2 =  $_SESSION['usern'];
-Echo "Inloggad som: " .$username2;
-require_once 'config.php';
-$query = "SELECT Firstname, Lastname, Address FROM users WHERE Kundnr = (SELECT Kundnr FROM logins WHERE Username = '" . $username2 . "')";
+#get profile info
 
-$test = (mysqli_query($link, $query));
-	while($kundnr = mysqli_fetch_assoc($test)){
- 		$Firstname['Firstname'] = $kundnr['Firstname'];
- 		$Lastname['Lastname'] = $kundnr['Lastname'];
- 		$Address['Address'] = $kundnr['Address'];
+$profile_array = getProfile($username2, $link);
+
+#set profile info
+
+$param_firstname = $profile_array['f'];
+$param_lastname = $profile_array['l'];
+$param_address = $profile_array['a'];
+
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+   $param_firstname = ($_POST["firstname"]);
+   $param_lastname = ($_POST["lastname"]);
+   $param_address = ($_POST["address"]);
+   $sql = "UPDATE users SET firstname='".$param_firstname ."', lastname='".$param_lastname ."',  address='".$param_address ."' WHERE kundnr = (SELECT Kundnr FROM logins WHERE Username = '".$username2."')";
+   (mysqli_query($link, $sql));
+
+  //Close db connection
+  mysqli_close($link);
 }
 ?>
 
@@ -28,7 +37,7 @@ $test = (mysqli_query($link, $query));
 		<link rel="stylesheet" href="css/profile.css">
 		<link rel="stylesheet" href="css/login-register.css">
 		<meta charset="utf-8">
-		<title>profile</title>
+		<title>Profile</title>
 	</head>
 	<body>
 	<div class="nav">
@@ -58,12 +67,12 @@ $test = (mysqli_query($link, $query));
 				<div class="vl">
 				</div>
 				<div class="profile-table">
-		          <form action="" method="post">
-		          <input type='text' placeholder="<?php echo $Firstname['Firstname']?>" name="firstname" id='firstname' maxlength="50" value="" />
+		          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+		          <input type='text' value="<?php echo $param_firstname?>" name="firstname" id='firstname' maxlength="50" value="" />
 							<br><br>
-							<input type='text' placeholder="<?php echo $Lastname['Lastname']?>" name="lastname" id='lastname' maxlength="50" value="" />
+							<input type='text' value="<?php echo $param_lastname?>" name="lastname" id='lastname' maxlength="50" value="" />
 							<br><br>
-							<input type='text' placeholder="<?php echo $Address['Address']?>" name="address" id='address' maxlength="50" value="" />
+							<input type='text' value="<?php echo $param_address?>" name="address" id='address' maxlength="50" value="" />
 				</div>
 				<input type="submit" name="Submit" class="profile-edit-button" value="Sumbit changes"/>
       </div>

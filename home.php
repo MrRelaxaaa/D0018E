@@ -2,6 +2,7 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+
 ?>
 <!-- Kommentar -->
 <!DOCTYPE html>
@@ -9,7 +10,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 	<head>
 		<link rel="stylesheet" href="css/main.css">
 		<meta charset="utf-8">
-		<title>test</title>
+		<title>Home</title>
 	</head>
 	<body>
 		<div class="nav">

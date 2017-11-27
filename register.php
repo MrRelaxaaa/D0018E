@@ -47,9 +47,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
             //Set parameters
             $param_username = $username; //trim($_POST["username"]);
-            $param_password = $password; //password_hash($password, PASSWORD_DEFAULT); 
+            $param_password = $password; //password_hash($password, PASSWORD_DEFAULT);
 			if(empty($param_username)){
-			echo "$param_username tom";}   		
+			echo "$param_username tom";}
             //Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 //Redirect to login page
@@ -60,7 +60,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         //Close statement
         mysqli_stmt_close($stmt);
-		
+
 		//Insert userinfo into users table
 		$param_username = trim($_POST["username"]);
 		$sql = "INSERT INTO users (Kundnr, Firstname, Lastname, Email, Address) VALUES ((select Kundnr from logins where Username = '".$param_username."'), ?, ?, ?, ?)";
@@ -86,7 +86,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		<link rel="stylesheet" href="css/main.css">
 		<link rel="stylesheet" href="css/login-register.css">
 		<meta charset="utf-8">
-		<title>test</title>
+		<title>Register</title>
 	</head>
 	<body>
 	<div class="nav">
