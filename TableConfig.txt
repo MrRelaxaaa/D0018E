@@ -22,18 +22,12 @@ create table assets (
 	Price int,
 	Rating int,
 	Stock int
+	url varchar(255),
 )
 
 create table comments (
 	Produktnr int PRIMARY KEY,
 	Comment varchar(255),
-	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
-)
-
-
-create table assetimages(
-	Produktnr int PRIMARY KEY,
-	url varchar(255),
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
 )
 
