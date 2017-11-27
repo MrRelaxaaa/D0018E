@@ -56,25 +56,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   <div class="registration-box">
     <div class="registration-holder">
       <!-- <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"> -->
-        <form action="admin.php" method="post" enctype="multipart/form-data">
-            <input type="file" name="fileToUpload" id="fileToUpload">
-            <!-- <input type="submit" value="Upload" name="submit"> -->
-        <!-- </form> -->
-        <br>
-        <br>
-        <input type='text' placeholder="Name" name="Name" id='Name' maxlength="50" value="<?php echo $Name; ?>" required/>
-      <br>
-      <br>
-      <input type='text' placeholder="Price" name="Price" id='Price' maxlength="50" value="<?php echo $Price; ?>" required/>
-      <br>
-      <br>
-      <input type='text' placeholder="Stock" name="Stock" id='Stock' maxlength="50" value="<?php echo $Stock; ?>" required/>
-      <br>
-      <br>
-      <!-- <input type='text' placeholder="image" name="image" id='image' maxlength="50" value="<?php echo $image; ?>" required/>
-      <br>
-      <br> -->
-      <input type="submit" name="Submit" class="button" value="Lägg till">
+      <form action="admin.php" method="post" enctype="multipart/form-data">
+          <input type='text' placeholder="Name" name="Name" id='Name' maxlength="50" value="<?php echo $Name; ?>" required/>
+          <br>
+          <br>
+          <input type='text' placeholder="Price" name="Price" id='Price' maxlength="50" value="<?php echo $Price; ?>" required/>
+          <br>
+          <br>
+          <input type='text' placeholder="Stock" name="Stock" id='Stock' maxlength="50" value="<?php echo $Stock; ?>" required/>
+          <br>
+          <br>
+          <!-- <input type='text' placeholder="image" name="image" id='image' maxlength="50" value="<?php echo $image; ?>" required/>
+          <br>
+          <br> -->
+          <input type="file" name="fileToUpload" id="fileToUpload">
+          <!-- <input type="submit" value="Upload" name="submit"> -->
+          <!-- </form> -->
+          <br>
+          <br>
+          <input type="submit" name="Submit" class="button" value="Lägg till">
     </form>
     </div>
   </div>

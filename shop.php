@@ -27,24 +27,11 @@ require 'getItems.php';
 			</div>
 		</div>
 		<div class="cart">
-			<a href="#"><img src="images/basket.ico" height="50px" width="50px"/></a>
+			<a href="shopping-cart.php"><img src="images/basket.ico" height="50px" width="50px"/></a>
 		</div>
 	</div>
 		<div class="bread-container">
-			<!-- getitems php här -->
 			<?php getitems(); ?>
-			<!-- <figure class="product-container">
-  			<img src="bikes/bike3.jpg" />
-  				<figcaption>
-    			<h1>Giant 1</h1>
-    				<p>Giant down-hill bike.</p>
-    				<div class="price">
-      				14.999:-
-    				</div>
-						<br>
-						<input type="submit" name="Submit" class="add-cart" value="Add to cart"/>
-			</figure> -->
-
 		</div>
 	</body>
 </html>

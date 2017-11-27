@@ -1,0 +1,136 @@
+.shopping-cart{
+  background-color: white;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  height: 20%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.asset-image{
+  float: left;
+  width: 20%;
+  height: 100%;
+}
+
+.asset-desc{
+  float: left;
+  width: 16%;
+  padding: 15px;
+  height: 76%;
+  text-align: center;
+}
+
+.asset-desc h1 {
+  font-size: 1.3em;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+.asset-desc p {
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+
+.asset-price{
+  float: left;
+  width: 16%;
+  padding: 15px;
+  height: 76%;
+  text-align: center;
+}
+
+.asset-price h1 {
+  font-size: 1.3em;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+.asset-price p {
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+
+.quantity{
+  float: left;
+  width: 16%;
+  padding: 15px;
+  height: 76%;
+  text-align: center;
+}
+
+.quantity h1 {
+  font-size: 1.3em;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.quantity input[type=number]{
+  text-align: center;
+}
+
+.quantity input[type=number]::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.remove{
+  float: left;
+  width: 18%;
+  padding: 15px;
+  height: 76
+}
+
+.remove img{
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.order{
+  background-color: white;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+  margin-top: 2%;
+  margin-left: 55.5%;
+  width: 24.5%;
+  height: 20%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.sub-total{
+  float: left;
+  width: 38%;
+  padding: 15px;
+  height: 76%;
+  text-align: center;
+}
+
+.sub-total h1 {
+  font-size: 1.3em;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+.sub-total p {
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+
+.order-button{
+  margin-top: 12%;
+  color: white;
+  font-size: 14px;
+  font-family: sans-serif;
+  font-variant: small-caps;
+  width: 45%;
+  background-color: #4CAF50;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}

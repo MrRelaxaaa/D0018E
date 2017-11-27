@@ -1,7 +1,7 @@
 <?php
-function getitems(){
+function getcart(){
   require_once 'config.php';
-  $getitems = "select * from assets";
+  $getitems = "select * from shoppingcart";
 
   $run_getitems = mysqli_query($link, $getitems);
 
