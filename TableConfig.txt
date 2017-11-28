@@ -21,7 +21,9 @@ create table assets (
 	Name varchar(255),
 	Price int,
 	Rating int,
-	Stock int
+	Stock int,
+	Description varchar(255),
+	image varchar(255)
 )
 
 create table comments (

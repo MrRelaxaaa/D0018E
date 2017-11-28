@@ -11,8 +11,8 @@ function getitems(){
       $product_id = $row_items['Produktnr'];
       $product_title = $row_items['Name'];
       $product_price = $row_items['Price'];
-      $product_desc = $row_items['description'];
       $product_img = $row_items['image'];
+      $product_desc = $row_items['Description'];
 
       echo "
             <figure class='product-container'>

@@ -1,9 +1,9 @@
-<?php
+<!-- <?php
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-?>
+?> -->
 <!-- Kommentar -->
 <!DOCTYPE html>
 <html lang="sv">
@@ -35,7 +35,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 		<div class="bread-container">
       <img src="images/logo.svg" height="400px" width="400px"/>
       <br>
-      <p>Hultstrand-Gertzell</p>
+      <p>Gertzell-Hultstrand</p>
       <p>est. 2017</p>
 		</div>
 	</body>
