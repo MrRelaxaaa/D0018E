@@ -1,6 +1,7 @@
 <?php
 include 'functions.php';
 db_con();
+check_sess();
 ?>
 <!-- Kommentar -->
 <!DOCTYPE html>
@@ -33,13 +34,7 @@ db_con();
 	</div>
 		<div class="bread-container">
       <?php getOrder(); ?>
-      <div class="order">
-        <div class="sub-total">
-          <h1>Total</h1>
-          <p>12999:-</p>
-        </div>
-        <input type="submit" name="Submit" class="order-button" value="Order"/>
-      </div>
+			<?php removeCart(); ?>
 		</div>
 	</body>
 </html>

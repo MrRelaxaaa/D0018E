@@ -34,7 +34,7 @@ check_sess();
 	</div>
 		<div class="bread-container">
 			<?php getitems(); ?>
-      <?php cart(); ?>
+      <?php addCart(); ?>
 		</div>
 	</body>
 </html>

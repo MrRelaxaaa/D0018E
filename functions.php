@@ -57,12 +57,14 @@ function getOrder(){
   /* Attempt to connect to MySQL database */
   check_sess();
   $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
   $getUsern = $_SESSION['usern'];
   $getId = "(SELECT Kundnr FROM logins WHERE Username='$getUsern')";
-  $getProdnr = "select Produktnr from shoppingcart where Kundnr = ($getId)";
+  $getProdnr = "SELECT Produktnr, CartID FROM shoppingcart WHERE Kundnr = ($getId)";
   $run_getProdnr= mysqli_query($link, $getProdnr);
-  $implode_getProdnr = "";
+  $total_price = 0;
   while($rowitems = mysqli_fetch_array($run_getProdnr)){
+     $cart_id = $rowitems['CartID'];
      $prod = $rowitems['Produktnr'];
      $getAssets = "SELECT * FROM assets WHERE Produktnr = $prod";
      $run_getAssets= mysqli_query($link, $getAssets);
@@ -73,6 +75,7 @@ function getOrder(){
         $product_price = $row_items['Price'];
         $product_img = $row_items['image'];
         $product_desc = $row_items['Description'];
+        $total_price = $total_price + $product_price;
 
         echo "
                 <div class='shopping-cart'>
@@ -85,22 +88,32 @@ function getOrder(){
                   </div>
                   <div class='asset-desc'>
                     <h1>Price</h1>
-                    <p>$product_price:-</p>
+                    <p>$product_price kr</p>
                   </div>
                   <div class='quantity'>
                     <h1>Amount</h1>
-                  <input type='number' name='quantity' min='1' max='10' style='font: 24pt Courier; width: 3ch; height: 1em'/>
+                      <p>1</p>
                 </div>
                 <div class='remove'>
-                  <img src='images/remove.png'/>
+                  <a href='shopping-cart.php?removeCart=$cart_id'><img src='images/remove.png'/></a>
                 </div>
                 </div>
             ";
     }
-    }
+  }
+  echo "
+          <div class='order'>
+            <div class='sub-total'>
+              <h1>Total</h1>
+              <p>$total_price kr</p>
+            </div>
+            <input type='submit' name='Submit' class='order-button' value='Order'/>
+          </div>
+  ";
 }
+#<input type='number' name='quantity' min='1' max='10' style='font: 24pt Courier; width: 3ch; height: 1em'/> quantity!!
 
-function cart(){
+function addCart(){
   if($_SESSION['inloggad'] !== '#'){
     $getUsern = $_SESSION['usern'];
     if(isset($_GET['addCart'])){
@@ -108,6 +121,18 @@ function cart(){
       $getId = "(SELECT Kundnr FROM logins WHERE Username='$getUsern')";
       $addcart = "INSERT INTO shoppingcart (Kundnr, Produktnr, QTY) VALUES ($getId, $prod_id, 1)";
       mysqli_query($_SESSION['dblink'], $addcart);
+    }
+  }
+}
+
+function removeCart(){
+  if($_SESSION['inloggad'] !== '#'){
+    $getUsern = $_SESSION['usern'];
+    if(isset($_GET['removeCart'])){
+      $cart_id = $_GET['removeCart'];
+      $getId = "(SELECT Kundnr FROM logins WHERE Username='$getUsern')";
+      $removecart = "DELETE FROM shoppingcart WHERE CartID=$cart_id";
+      mysqli_query($_SESSION['dblink'], $removecart);
     }
   }
 }
