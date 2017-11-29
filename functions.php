@@ -153,4 +153,5 @@ function getProfile($username, $link){
   $out['a'] = $address;
   return $out;
 }
+
 ?>

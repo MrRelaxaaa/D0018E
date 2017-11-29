@@ -24,12 +24,12 @@ check_sess();
     <div class="dropdown2">
 			<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
 			<div class="dropdown-content2">
-				<a href="profile.php">Profile</a><br>
+				<a href="redirect.php?page=profile.php">Profile</a><br>
 				<a href="logout.php">Logout</a>
 			</div>
 		</div>
 		<div class="cart">
-			<a href="shopping-cart.php"><img src="images/basket.ico" height="50px" width="50px"/></a>
+			<a href="redirect.php?page=shopping-cart.php"><img src="images/basket.ico" height="50px" width="50px"/></a>
 		</div>
 	</div>
 		<div class="bread-container">

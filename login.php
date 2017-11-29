@@ -31,12 +31,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 					$test = (mysqli_query($link, $query));
 						while($kundnr = mysqli_fetch_assoc($test)){
-						//mysqli_fetch_row(
+
 					 $_SESSION['Firstname'] = $kundnr['Firstname'];
 					 $_SESSION['Lastname'] = $kundnr['Lastname'];
 					 $_SESSION['Address'] = $kundnr['Address'];
-           $_SESSION['inloggad'] = "/profile.php";
-           $_SESSION['cart'] = "/shopping-cart.php";
+           $_SESSION['inloggad'] = "profile.php";
+           $_SESSION['cart'] = "shopping-cart.php";
 					 echo $_SESSION['firstname'];
 					}
           if ($_SESSION['usern'] != "root"){
@@ -81,7 +81,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		<div class="dropdown2">
 			<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
 			<div class="dropdown-content2">
-				<a href="<?php echo $_session["inlogggad"] ?>">Profile</a><br> <!--  "profile.php" -->
+				<a href="redirect.php?page=profile.php">Profile</a><br> <!--  "profile.php" -->
 				<a href="logout.php">Logout</a>
 			</div>
 		</div>
