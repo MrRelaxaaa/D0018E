@@ -1,3 +1,7 @@
+<?php
+include 'functions.php';
+db_con();
+?>
 <!-- Kommentar -->
 <!DOCTYPE html>
 <html lang="sv">
@@ -20,7 +24,7 @@
 			<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
 			<div class="dropdown-content2">
 				<a href="profile.php">Profile</a><br>
-				<a href="#">Logout</a>
+				<a href="logout.php">Logout</a>
 			</div>
 		</div>
 		<div class="cart">
@@ -28,26 +32,7 @@
 		</div>
 	</div>
 		<div class="bread-container">
-      <div class="shopping-cart">
-        <div class="asset-image">
-          <img src="bikes/bike2.jpeg" width="174px" height="130px"/>
-        </div>
-        <div class="asset-desc">
-          <h1>Giant 1</h1>
-          <p>Central suspension</p>
-        </div>
-        <div class="asset-desc">
-          <h1>Price</h1>
-          <p>14999:-</p>
-        </div>
-        <div class="quantity">
-          <h1>Amount</h1>
-        <input type="number" name="quantity" min="1" max="10" style="font: 24pt Courier; width: 3ch; height: 1em"/>
-      </div>
-      <div class="remove">
-        <img src="images/remove.png"/>
-      </div>
-      </div>
+      <?php getOrder(); ?>
       <div class="order">
         <div class="sub-total">
           <h1>Total</h1>

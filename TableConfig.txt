@@ -40,10 +40,10 @@ create table assetimages(
 )
 
 create table shoppingcart (
-	Kundnr int PRIMARY KEY,
-	Produktnr int,
+	CartID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	Kundnr int NOT NULL,
+	Produktnr int NOT NULL,
 	QTY int,
-	Price int,
 	Date varchar(255),
 	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr),
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)

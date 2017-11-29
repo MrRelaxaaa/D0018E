@@ -3,10 +3,9 @@
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
   margin-left: auto;
   margin-right: auto;
+  margin-top: 1%;
   width: 60%;
-  height: 20%;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+  height: 15%;
 }
 
 .asset-image{
@@ -29,7 +28,7 @@
   margin-bottom: 5px;
 }
 .asset-desc p {
-  font-size: 0.9em;
+  font-size: 0.6em;
   letter-spacing: 1px;
   font-weight: 300;
 }
@@ -48,7 +47,7 @@
   margin-bottom: 5px;
 }
 .asset-price p {
-  font-size: 0.9em;
+  font-size: 0.6em;
   letter-spacing: 1px;
   font-weight: 300;
 }
@@ -78,9 +77,9 @@
 
 .remove{
   float: left;
-  width: 18%;
+  width: 17.7%;
   padding: 15px;
-  height: 76
+  height: 75%;
 }
 
 .remove img{
@@ -92,10 +91,10 @@
 .order{
   background-color: white;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
-  margin-top: 2%;
   margin-left: 55.5%;
+  margin-top: 1%;
   width: 24.5%;
-  height: 20%;
+  height: 15%;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
@@ -114,7 +113,7 @@
   margin-bottom: 5px;
 }
 .sub-total p {
-  font-size: 0.9em;
+  font-size: 0.6em;
   letter-spacing: 1px;
   font-weight: 300;
 }

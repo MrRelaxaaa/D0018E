@@ -1,17 +1,12 @@
 <?php
-require_once 'config.php';
-require 'getProfileInfo.php';
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-//var_dump($_SESSION);
+include 'functions.php';
+$link = db_con();
+check_sess();
 $username2 =  $_SESSION['usern'];
 #get profile info
-
 $profile_array = getProfile($username2, $link);
 
 #set profile info
-
 $param_firstname = $profile_array['f'];
 $param_lastname = $profile_array['l'];
 $param_address = $profile_array['a'];

@@ -1,5 +1,7 @@
 <?php
-require_once 'config.php';
+include 'functions.php';
+$link = db_con();
+check_sess();
 $username = $firstname = $lastname = $email = $address = $password = "";
 $username_err = $password_err = "";
 //Run on post
@@ -124,7 +126,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <input type='password' placeholder="password" name="password" id='password' maxlength="50" value="<?php echo $password; ?>" required/>
 					<br>
           <br>
-          <input type='email' placeholder="e-mail" name="email" id='email' maxlength="50" value="<?php echo $email; ?>" required/>
+          <input type='text' placeholder="e-mail" name="email" id='email' maxlength="50" value="<?php echo $email; ?>" required/>
 					<br>
           <br>
           <input type='text' placeholder="address" name="address" id='address' maxlength="50" value="<?php echo $address; ?>" required/>

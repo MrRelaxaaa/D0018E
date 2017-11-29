@@ -1,9 +1,6 @@
-<!-- <?php
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-
-?> -->
+<?php
+include 'functions.php';
+?>
 <!-- Kommentar -->
 <!DOCTYPE html>
 <html lang="sv">
@@ -24,8 +21,8 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 	    <div class="dropdown2">
 				<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
 				<div class="dropdown-content2">
-					<a href="profile.php">Profile</a><br>
-					<a href="logout.php">Logout</a>
+					<a href="profile.php">Profile</a><br> <!-- check if logged in func here -->
+					<a href="logout.php">Logout</a> <!-- Log-out func here -->
 				</div>
 			</div>
 			<div class="cart">

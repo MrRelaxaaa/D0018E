@@ -1,14 +1,14 @@
 <?php
-require_once 'config.php';
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
+include 'functions.php';
+check_sess();
+$link = db_con();
 if ($_SESSION['usern'] != "root"){
   header("location: home.php");
 }
 $Name = "Namn";
 $Price = "Pris";
 $Stock = "Lager";
+$Description = "Beskrivning";
 //$image = "Bildnamn";
 $dir = "bikes/";
 //$_FILES["fileToUpload"]["name"] = "";
@@ -20,9 +20,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   $Name = $_POST['Name'];
   $Price = $_POST['Price'];
   $Stock = $_POST['Stock'];
+  $Description = $_POST['Description'];
   settype($Price, "integer");
   settype($Stock, "integer");
-  $sql = "INSERT INTO assets (Name, Price, Stock, image) VALUES ('$Name', $Price, $Stock, '$file')";
+  $sql = "INSERT INTO assets (Name, Price, Stock, Description, image) VALUES ('$Name', $Price, $Stock, '$Description', '$file')";
   echo $sql;
   mysqli_query($link, $sql);
   mysqli_close($link);
@@ -52,8 +53,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="dropdown2">
   <span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
   <div class="dropdown-content2">
-    <a href="#">Profile</a><br>
-    <a href="#">Logout</a>
+    <a href="profile.php">Profile</a><br>
+    <a href="logout.php">Logout</a>
   </div>
 </div>
 </div>
@@ -70,6 +71,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
           <br>
           <br>
           <input type='text' placeholder="Stock" name="Stock" id='Stock' maxlength="50" value="<?php echo $Stock; ?>" required/>
+          <br>
+          <br>
+          <input type='text' placeholder="Description" name="Description" id='Description' maxlength="50" value="<?php echo $Description; ?>" required/>
           <br>
           <br>
           <!-- <input type='text' placeholder="image" name="image" id='image' maxlength="50" value="<?php echo $image; ?>" required/>

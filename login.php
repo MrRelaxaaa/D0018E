@@ -1,8 +1,7 @@
 <?php
-require_once 'config.php';
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
+include 'functions.php';
+check_sess();
+$link = db_con();
 $username = "";
 $password = "";
 $_SESSION['inloggad'] = "#";
@@ -81,7 +80,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
 			<div class="dropdown-content2">
 				<a href="<?php echo $_session["inlogggad"] ?>">Profile</a><br> <!--  "profile.php" -->
-				<a href="#">Logout</a>
+				<a href="logout.php">Logout</a>
 			</div>
 		</div>
 		<div class="cart">

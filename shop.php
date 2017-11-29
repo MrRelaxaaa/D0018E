@@ -1,5 +1,7 @@
 <?php
-require 'getItems.php';
+include 'functions.php';
+db_con();
+check_sess();
 ?>
 <!-- Kommentar -->
 <!DOCTYPE html>
@@ -23,7 +25,7 @@ require 'getItems.php';
 			<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
 			<div class="dropdown-content2">
 				<a href="profile.php">Profile</a><br>
-				<a href="#">Logout</a>
+				<a href="logout.php">Logout</a>
 			</div>
 		</div>
 		<div class="cart">
@@ -32,6 +34,7 @@ require 'getItems.php';
 	</div>
 		<div class="bread-container">
 			<?php getitems(); ?>
+      <?php cart(); ?>
 		</div>
 	</body>
 </html>
