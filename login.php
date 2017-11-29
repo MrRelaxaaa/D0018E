@@ -5,6 +5,7 @@ $link = db_con();
 $username = "";
 $password = "";
 $_SESSION['inloggad'] = "#";
+$_SESSION['cart'] = "#";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty(trim($_POST["username"]))){
 		//Don't run else statement if no username entered
@@ -35,6 +36,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 					 $_SESSION['Lastname'] = $kundnr['Lastname'];
 					 $_SESSION['Address'] = $kundnr['Address'];
            $_SESSION['inloggad'] = "/profile.php";
+           $_SESSION['cart'] = "/shopping-cart.php";
 					 echo $_SESSION['firstname'];
 					}
           if ($_SESSION['usern'] != "root"){

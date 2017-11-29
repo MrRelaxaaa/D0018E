@@ -1,5 +1,6 @@
 <?php
 include 'functions.php';
+check_sess();
 ?>
 <!-- Kommentar -->
 <!DOCTYPE html>
@@ -21,8 +22,8 @@ include 'functions.php';
 	    <div class="dropdown2">
 				<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
 				<div class="dropdown-content2">
-					<a href="profile.php">Profile</a><br> <!-- check if logged in func here -->
-					<a href="logout.php">Logout</a> <!-- Log-out func here -->
+					<a href="profile.php">Profile</a><br>
+					<a href="logout.php">Logout</a>
 				</div>
 			</div>
 			<div class="cart">
