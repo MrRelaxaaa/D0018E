@@ -29,7 +29,10 @@ create table assets (
 create table comments (
 	Produktnr int PRIMARY KEY,
 	Comment varchar(255),
-	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+	Added DATETIME,
+	Kundnr int,
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr),
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr)
 )
 
 
