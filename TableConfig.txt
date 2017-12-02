@@ -7,7 +7,11 @@ create table logins (
 )
 
 create table users (
+<<<<<<< HEAD
 	Kundnr int PRIMARY KEY AUTO_INCREMENT,
+=======
+	Kundnr int PRIMARY KEY,
+>>>>>>> Sprint3
 	Firstname varchar(255),
 	Lastname varchar(255),
 	Email varchar(255),
@@ -21,6 +25,7 @@ create table assets (
 	Name varchar(255),
 	Price int,
 	Rating int,
+<<<<<<< HEAD
 	Stock int
 )
 
@@ -28,6 +33,21 @@ create table comments (
 	Produktnr int PRIMARY KEY,
 	Comment varchar(255),
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+=======
+	Stock int,
+	Description varchar(255),
+	image varchar(255)
+)
+
+create table comments (
+	CommentID int PRIMARY KEY AUTO_INCREMENT,
+	Produktnr int,
+	Comment varchar(255),
+	Added DATETIME,
+	Kundnr int,
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr),
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr)
+>>>>>>> Sprint3
 )
 
 
@@ -37,11 +57,28 @@ create table assetimages(
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
 )
 
+<<<<<<< HEAD
 create table shoppingcart (
 	Kundnr int PRIMARY KEY,
 	Produktnr int,
 	QTY int,
 	Price int,
+=======
+create table hasliked(
+	RatingID int PRIMARY KEY AUTO_INCREMENT,
+	Produktnr int,
+	Kundnr int,
+	Liked BOOLEAN DEFAULT NULL,
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr),
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr)
+)
+
+create table shoppingcart (
+	CartID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	Kundnr int NOT NULL,
+	Produktnr int NOT NULL,
+	QTY int,
+>>>>>>> Sprint3
 	Date varchar(255),
 	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr),
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
@@ -56,4 +93,8 @@ create table userorder (
 	Kundnr int,
 	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr),
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+<<<<<<< HEAD
 )
+=======
+)
+>>>>>>> Sprint3

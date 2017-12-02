@@ -1,0 +1,66 @@
+.login-box{
+  padding-top: 20px;
+  background:RGBA(255,255,255,1);
+  -webkit-box-shadow:  0px 0px 15px 0px rgba(0, 0, 0, .45);
+  box-shadow:  0px 0px 15px 0px rgba(0, 0, 0, .45);
+  height: 30%;
+  width: 25%;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius:5px;
+}
+
+.registration-box{
+  padding-top: 20px;
+  background:RGBA(255,255,255,1);
+  -webkit-box-shadow:  0px 0px 15px 0px rgba(0, 0, 0, .45);
+  box-shadow:  0px 0px 15px 0px rgba(0, 0, 0, .45);
+  height: 60%;
+  width: 25%;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius:5px;
+}
+
+.login-holder{
+  height: 220px;
+  width: 88%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.registration-holder{
+  height: 443px;
+  width: 88%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+input[type=text], input[type=password], input[type=email] {
+  font-size: 14px;
+  font-family: sans-serif;
+  font-variant: small-caps;
+  font-style: none;
+  color: #afafaf;
+  text-indent: 6%;
+  text-align: left;
+  border: none;
+  background-color: #DDDDDD;
+  height: 50px;
+  width: 100%;
+}
+
+.button{
+  color: white;
+  font-size: 14px;
+  font-family: sans-serif;
+  font-variant: small-caps;
+  width: 100%;
+  background-color: #4CAF50;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
