@@ -1,11 +1,7 @@
 <?php
-<<<<<<< HEAD
-require_once 'config.php';
-=======
 include 'functions.php';
 $link = db_con();
 check_sess();
->>>>>>> Sprint3
 $username = $firstname = $lastname = $email = $address = $password = "";
 $username_err = $password_err = "";
 //Run on post
@@ -53,15 +49,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
             //Set parameters
             $param_username = $username; //trim($_POST["username"]);
-<<<<<<< HEAD
-            $param_password = $password; //password_hash($password, PASSWORD_DEFAULT); 
-			if(empty($param_username)){
-			echo "$param_username tom";}   		
-=======
             $param_password = $password; //password_hash($password, PASSWORD_DEFAULT);
 			if(empty($param_username)){
 			echo "$param_username tom";}
->>>>>>> Sprint3
             //Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 //Redirect to login page
@@ -72,11 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         //Close statement
         mysqli_stmt_close($stmt);
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> Sprint3
 		//Insert userinfo into users table
 		$param_username = trim($_POST["username"]);
 		$sql = "INSERT INTO users (Kundnr, Firstname, Lastname, Email, Address) VALUES ((select Kundnr from logins where Username = '".$param_username."'), ?, ?, ?, ?)";
@@ -99,48 +85,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <!DOCTYPE html>
 <html lang="sv">
 	<head>
-<<<<<<< HEAD
-		<link rel="stylesheet" href="main.css">
-		<link rel="stylesheet" href="login-register.css">
-		<meta charset="utf-8">
-		<title>test</title>
-=======
 		<link rel="stylesheet" href="css/main.css">
 		<link rel="stylesheet" href="css/login-register.css">
 		<meta charset="utf-8">
 		<title>Register</title>
->>>>>>> Sprint3
 	</head>
 	<body>
 	<div class="nav">
 		<div class="dropdown">
-<<<<<<< HEAD
-			<span><a href="home.php"><img src="logo.svg" height="50px" width="50px"/></a></span>
-=======
 			<span><a href="home.php"><img src="images/logo.svg" height="50px" width="50px"/></a></span>
->>>>>>> Sprint3
 			<div class="dropdown-content">
 				<a href="login.php">Login</a><br>
 				<a href="shop.php">Shop</a>
 			</div>
 		</div>
 		<div class="dropdown2">
-<<<<<<< HEAD
-			<span><a href="#"><img src="profile.png" height="50px" width="50px"/></a></span>
-=======
 			<span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
->>>>>>> Sprint3
 			<div class="dropdown-content2">
 				<a href="#">Profile</a><br>
 				<a href="#">Logout</a>
 			</div>
 		</div>
 		<div class="cart">
-<<<<<<< HEAD
-			<a href="#"><img src="basket.ico" height="50px" width="50px"/></a>
-=======
 			<a href="#"><img src="images/basket.ico" height="50px" width="50px"/></a>
->>>>>>> Sprint3
 		</div>
 	</div>
 		<div class="bread-container">
