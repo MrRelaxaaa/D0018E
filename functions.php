@@ -79,7 +79,7 @@ function getOrder(){
                   <div class='asset-image'>
                     <img src='$product_img' width='174px' height='130px'/>
                   </div>
-                  <div class='asset-desc'>
+                    <div class='asset-desc'>
                     <h1>$product_title</h1>
                     <p>$product_desc</p>
                   </div>
@@ -139,8 +139,8 @@ function getProductpage(){
                    <p>$product_price kr</p>
                    <br>
                    <div class='product-rating-icon'>
-                   <img src='images/up.png'/>
-                   <img src='images/down.png'/>
+                   <a href='likehelper.php?liked=like'><img src='images/up.png'/></a>
+                   <a href='likehelper.php?liked=dislike'><img src='images/down.png'/></a>
                    <br>
                    <p>$product_likes liked | $product_dislikes disliked</p>
                    </div>
@@ -149,6 +149,45 @@ function getProductpage(){
        ";
      }
   }
+}
+
+function like(){
+  $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
+  $username = $_SESSION['usern'];
+  $is_set = "";
+  $getid = "(SELECT Kundnr FROM logins WHERE Username='$username')";
+  $prod_id = $_SESSION['product_id'];
+  $sql = "SELECT Liked FROM hasliked WHERE Produktnr=$prod_id AND Kundnr=$getid";
+  $test = (mysqli_query($link, $sql));
+  while($liked = mysqli_fetch_assoc($test)){
+      $is_set = $liked['Liked'];
+  }
+  if($is_set == "" || $is_set == 0){
+    $ins_like = "INSERT INTO hasliked (Produktnr, Kundnr, Liked) VALUES ($prod_id, (SELECT Kundnr FROM logins WHERE Username='$username'), 1)";
+    (mysqli_query($link, $ins_like));
+  }
+  mysqli_close($link);
+}
+
+function dislike(){
+  $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
+  $username = $_SESSION['usern'];
+  $is_set = "";
+  $getid = "(SELECT Kundnr FROM logins WHERE Username='$username')";
+  $prod_id = $_SESSION['product_id'];
+  $sql = "SELECT Liked FROM hasliked WHERE Produktnr=$prod_id AND Kundnr=$getid";
+  $test = (mysqli_query($link, $sql));
+  while($liked = mysqli_fetch_assoc($test)){
+      $is_set = $liked['Liked'];
+  }
+  echo $is_set;
+  if($is_set == "" || $is_set == 1){
+    $ins_dislike = "INSERT INTO hasliked (Produktnr, Kundnr, Liked) VALUES ($prod_id, (SELECT Kundnr FROM logins WHERE Username='$username'), 0)";
+    (mysqli_query($link, $ins_dislike));
+  }
+  mysqli_close($link);
 }
 
 function getProductComment(){

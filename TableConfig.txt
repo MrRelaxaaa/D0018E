@@ -44,12 +44,12 @@ create table assetimages(
 )
 
 create table hasliked(
-	RatingID int PRIMARY KEY AUTO_INCREMENT,
 	Produktnr int,
 	Kundnr int,
 	Liked BOOLEAN DEFAULT NULL,
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr),
-	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr)
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr),
+	PRIMARY KEY (Produktnr, Kundnr)
 )
 
 create table shoppingcart (
