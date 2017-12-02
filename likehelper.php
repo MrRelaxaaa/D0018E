@@ -19,11 +19,17 @@ if($var_liked == "like"){
  if($is_set == ""){
    $ins_like = "INSERT INTO hasliked (Produktnr, Kundnr, Liked) VALUES ($prod_id, (SELECT Kundnr FROM logins WHERE Username='$username'), 1)";
    mysqli_query($link, $ins_like);
+   $update_asset_rating = "UPDATE assets SET likes = likes + 1 WHERE Produktnr=$prod_id";
+   mysqli_query($link, $update_asset_rating);
  }elseif($is_set == 0){
     $update = "UPDATE hasliked SET Liked=1 WHERE Produktnr=$prod_id AND Kundnr=(SELECT Kundnr FROM logins WHERE Username='$username')";
     mysqli_query($link, $update);
+    $update_asset_rating = "UPDATE assets SET likes = likes + 1 WHERE Produktnr=$prod_id";
+    mysqli_query($link, $update_asset_rating);
+    $update_asset_rating2 = "UPDATE assets SET dislikes = dislikes - 1 WHERE Produktnr=$prod_id";
+    mysqli_query($link, $update_asset_rating2);
   }
- mysqli_close($link);
+  mysqli_close($link);
 }
 
 elseif($var_liked == "dislike"){
@@ -37,16 +43,22 @@ elseif($var_liked == "dislike"){
  if($is_set == ""){
    $ins_dislike = "INSERT INTO hasliked (Produktnr, Kundnr, Liked) VALUES ($prod_id, (SELECT Kundnr FROM logins WHERE Username='$username'), 0)";
    mysqli_query($link, $ins_dislike);
+   $update_asset_rating = "UPDATE assets SET dislikes = dislikes + 1 WHERE Produktnr=$prod_id";
+   mysqli_query($link, $update_asset_rating);
  }
  elseif($is_set == 1){
    $update = "UPDATE hasliked SET Liked=0 WHERE Produktnr=$prod_id AND Kundnr=(SELECT Kundnr FROM logins WHERE Username='$username')";
    mysqli_query($link, $update);
+   $update_asset_rating = "UPDATE assets SET dislikes = dislikes + 1 WHERE Produktnr=$prod_id";
+   mysqli_query($link, $update_asset_rating);
+   $update_asset_rating2 = "UPDATE assets SET likes = likes - 1 WHERE Produktnr=$prod_id";
+   mysqli_query($link, $update_asset_rating2);
  }
-
  mysqli_close($link);
 }
 else {
   echo "Error line 49; neither dis or like";
 }
+
 header("Location: products.php?viewProduct=$prod_id");
 ?>
