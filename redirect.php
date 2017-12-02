@@ -9,5 +9,4 @@ if($_SESSION['inloggad'] != '#'){
   exit;
 }
 header('Location: login.php');
-
  ?>
