@@ -3,16 +3,17 @@ include 'functions.php';
 $link = db_con();
 check_sess();
 $username2 =  $_SESSION['usern'];
-
+$param_comment = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 	 $param_kundnr = "(SELECT Kundnr FROM logins WHERE Username = '".$username2."')";
    $param_comment = ($_POST["Comment"]);
-   $sql = "INSERT INTO comments (Produktnr, Comment, Added, Kundnr) VALUES ('1', '$param_comment', now(), '$param_kundnr')";
+	 $prod_id = $_SESSION['product_id'];
+   $sql = "INSERT INTO comments (Produktnr, Comment, Added, Kundnr) VALUES ($prod_id, '$param_comment', now(), $param_kundnr)";
 	 echo $sql;
    (mysqli_query($link, $sql));
-
   //Close db connection
   mysqli_close($link);
+	header("Location: products.php?viewProduct=$prod_id");
 }
 ?>
 <!-- Kommentar -->

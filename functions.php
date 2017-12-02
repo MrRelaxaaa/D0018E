@@ -115,6 +115,7 @@ function getProductpage(){
   $_SESSION['dblink'] = $link;
   if(isset($_GET['viewProduct'])){
     $prod_id = $_GET['viewProduct'];
+    $_SESSION['product_id'] = $prod_id;
     $get_prod = "SELECT * FROM assets WHERE Produktnr=$prod_id";
     $run_get_prod= mysqli_query($link, $get_prod);
     while ($row_items=mysqli_fetch_array($run_get_prod)){
