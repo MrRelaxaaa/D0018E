@@ -27,9 +27,13 @@ create table assets (
 )
 
 create table comments (
-	Produktnr int PRIMARY KEY,
+	CommentID int PRIMARY KEY AUTO_INCREMENT,
+	Produktnr int,
 	Comment varchar(255),
-	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+	Added DATETIME,
+	Kundnr int,
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr),
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr)
 )
 
 
@@ -37,6 +41,15 @@ create table assetimages(
 	Produktnr int PRIMARY KEY,
 	url varchar(255),
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+)
+
+create table hasliked(
+	RatingID int PRIMARY KEY AUTO_INCREMENT,
+	Produktnr int,
+	Kundnr int,
+	Liked BOOLEAN DEFAULT NULL,
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr),
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr)
 )
 
 create table shoppingcart (

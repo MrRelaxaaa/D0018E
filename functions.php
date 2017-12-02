@@ -25,10 +25,7 @@ function getitems(){
   $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
   $_SESSION['dblink'] = $link;
   $getitems = "select * from assets";
-
   $run_getitems = mysqli_query($link, $getitems);
-
-
   while ($row_items=mysqli_fetch_array($run_getitems)){
 
       $product_id = $row_items['Produktnr'];
@@ -39,7 +36,7 @@ function getitems(){
 
       echo "
             <figure class='product-container'>
-      			<img src='$product_img'/>
+      			<a href='products.php?viewProduct=$product_id'><img src='$product_img'/></a>
       				<figcaption>
         			<h1>$product_title</h1>
         				<p>$product_desc</p>
@@ -112,6 +109,73 @@ function getOrder(){
   ";
 }
 #<input type='number' name='quantity' min='1' max='10' style='font: 24pt Courier; width: 3ch; height: 1em'/> quantity!!
+
+function getProductpage(){
+  $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
+  if(isset($_GET['viewProduct'])){
+    $prod_id = $_GET['viewProduct'];
+    $_SESSION['product_id'] = $prod_id;
+    $get_prod = "SELECT * FROM assets WHERE Produktnr=$prod_id";
+    $run_get_prod= mysqli_query($link, $get_prod);
+    while ($row_items=mysqli_fetch_array($run_get_prod)){
+
+       $product_title = $row_items['Name'];
+       $product_price = $row_items['Price'];
+       $product_img = $row_items['image'];
+       $product_desc = $row_items['Description'];
+       $product_likes = $row_items['likes'];
+       $product_dislikes = $row_items['dislikes'];
+
+       echo "
+               <div class='product-container'>
+                 <div class='img-container'>
+                   <img src='$product_img'/>
+                 </div>
+                <div class='vl'></div>
+                 <div class='product-description'>
+                   <h1>$product_title</h1>
+                   <p>$product_desc</p>
+                   <p>$product_price kr</p>
+                   <br>
+                   <div class='product-rating-icon'>
+                   <img src='images/up.png'/>
+                   <img src='images/down.png'/>
+                   <br>
+                   <p>$product_likes liked | $product_dislikes disliked</p>
+                   </div>
+                 </div>
+               </div>
+       ";
+     }
+  }
+}
+
+function getProductComment(){
+  $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
+  if(isset($_GET['viewProduct'])){
+    $prod_id = $_GET['viewProduct'];
+    $get_comment = "SELECT * FROM comments WHERE Produktnr=$prod_id";
+    $run_get_comment= mysqli_query($link, $get_comment);
+    while ($row_items=mysqli_fetch_array($run_get_comment)){
+        $user_id = $row_items['Kundnr'];
+        $comment = $row_items['Comment'];
+        $created_at = $row_items['Added'];
+        $get_username = "SELECT Username FROM logins WHERE Kundnr=$user_id";
+        $run_get_username= mysqli_query($link, $get_username);
+        while ($row_items=mysqli_fetch_array($run_get_username)){
+          $username = $row_items['Username'];
+          echo"
+                <div class='view-comments'>
+                  <div class='comment-info'><div class='user-icon'><img src='images/profile.png'/></div><div class='user-info'>$username</div><div class='user-date'>$created_at pm</div></div>
+                  <div class='comment'>$comment</div>
+                </div>
+          ";
+        }
+    }
+  }
+}
 
 function addCart(){
   if($_SESSION['inloggad'] !== '#'){
