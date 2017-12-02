@@ -13,7 +13,7 @@ $Description = "Beskrivning";
 $dir = "bikes/";
 //$_FILES["fileToUpload"]["name"] = "";
 $fileToUpload = "";
-$file = $dir . basename($_FILES["fileToUpload"]["name"]);
+//$file = $dir . basename($_FILES["fileToUpload"]["name"]);
 if($_SERVER["REQUEST_METHOD"] == "POST") {
   $file = $dir . basename($_FILES["fileToUpload"]["name"]);
   move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $file);
@@ -39,7 +39,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/login-register.css">
 <meta charset="utf-8">
-<title>ADMIN :O</title>
+<title>ADMIN</title>
 </head>
 <body>
 <div class="nav">
@@ -47,7 +47,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   <span><a href="home.php"><img src="images/logo.svg" height="50px" width="50px"/></a></span>
   <div class="dropdown-content">
     <a href="login.php">Login</a><br>
-    <a href="shop.php">Shop</a>
   </div>
 </div>
 <div class="dropdown2">
@@ -88,6 +87,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
     </div>
   </div>
+  		<link rel="stylesheet" href="css/products.css">
+  	</head>
+  	<body>
+  	<div class="nav">
+  	</div>
+  		<div class="bread-container">
+  			<?php removeItems(); ?>
+        <?php removeProd(); ?>
+  		</div>
+      <div class="nav">
+      </div>
+  	</body>
 </div>
 
 </body>
