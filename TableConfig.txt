@@ -20,10 +20,11 @@ create table assets (
 	Produktnr int PRIMARY KEY AUTO_INCREMENT,
 	Name varchar(255),
 	Price int,
-	Rating int,
 	Stock int,
 	Description varchar(255),
-	image varchar(255)
+	image varchar(255),
+	likes int(11) default 0,
+	dislikes int(11) default 0 
 )
 
 create table comments (
@@ -52,7 +53,6 @@ create table shoppingcart (
 	Kundnr int NOT NULL,
 	Produktnr int NOT NULL,
 	QTY int,
-	Date varchar(255),
 	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr) ON DELETE CASCADE,
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr) ON DELETE CASCADE
 )
@@ -62,7 +62,7 @@ create table userorder (
 	Produktnr int,
 	QTY int,
 	Price int,
-	Date varchar(255),
+	Dates DATETIME,
 	Kundnr int,
 	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr) ON DELETE CASCADE,
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr) ON DELETE CASCADE
