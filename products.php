@@ -2,7 +2,9 @@
 include 'functions.php';
 $link = db_con();
 check_sess();
-$username2 =  $_SESSION['usern'];
+if(isset($_SESSION['usern'])){
+	$username2 =  $_SESSION['usern'];
+}
 $param_comment = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 	 $param_kundnr = "(SELECT Kundnr FROM logins WHERE Username = '".$username2."')";
