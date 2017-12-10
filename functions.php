@@ -76,6 +76,9 @@ function getOrder(){
         $product_desc = $row_items['Description'];
         $product_stock = $row_items['Stock'];
         $total_price = $total_price + $product_price;
+        $getQTY = "SELECT * FROM shoppingcart WHERE Produktnr=$product_id";
+        $quantity = mysqli_query($_SESSION['dblink'], $getQTY);
+        $getamount = mysqli_fetch_assoc($quantity);
 
         echo "
                 <div class='shopping-cart'>
@@ -90,15 +93,23 @@ function getOrder(){
                     <h1>Price</h1>
                     <p>$product_price kr</p>
                   </div>
+                  <form method='post' action='shopping-cart.php'>
                   <div class='quantity'>
                     <h1>Amount</h1>
-                      <input type='number' name='quantity' min='1' max='$product_stock' style='font: 16pt Courier; width: 3ch; height: 1em'/>
+                      <input type='number' value=".$getamount['QTY']." name='quantity' min='1' max='$product_stock' style='font: 16pt Courier; width: 3ch; height: 1em'/>
+                      <input type='hidden' name='hidden' value='$product_id'></input>
+                      <button type='submit' name='set'>set</button>
                 </div>
+                </form>
                 <div class='remove'>
                   <a href='shopping-cart.php?removeCart=$cart_id'><img src='images/remove.png'/></a>
                 </div>
                 </div>
             ";
+            if(isset($_POST['set'])){
+              $sql = "UPDATE shoppingcart SET QTY = '$_POST[quantity]' WHERE Produktnr = '$_POST[hidden]'";
+              mysqli_query($_SESSION['dblink'], $sql);
+            }
     }
   }
   echo "
@@ -190,7 +201,8 @@ function addCart(){
     if(isset($_GET['addCart'])){
       $prod_id = $_GET['addCart'];
       $getId = "(SELECT Kundnr FROM logins WHERE Username='$getUsern')";
-      $addcart = "INSERT INTO shoppingcart (Kundnr, Produktnr, QTY) VALUES ($getId, $prod_id, 1)";
+      $getPrice = "(SELECT Price FROM assets WHERE Produktnr=$prod_id)";
+      $addcart = "INSERT INTO shoppingcart (Kundnr, Produktnr, QTY, Price) VALUES ($getId, $prod_id, 1, $getPrice)";
       mysqli_query($_SESSION['dblink'], $addcart);
     }
   }

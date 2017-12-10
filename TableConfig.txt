@@ -53,6 +53,7 @@ create table shoppingcart (
 	Kundnr int NOT NULL,
 	Produktnr int NOT NULL,
 	QTY int,
+	Price int,
 	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr) ON DELETE CASCADE,
 	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr) ON DELETE CASCADE
 )
