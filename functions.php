@@ -275,4 +275,45 @@ function getProfile($username, $link){
   return $out;
 }
 
+function removeItems(){
+  /* Attempt to connect to MySQL database */
+  $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
+  $getitems = "select * from assets";
+  $run_getitems = mysqli_query($link, $getitems);
+  while ($row_items=mysqli_fetch_array($run_getitems)){
+
+      $product_id = $row_items['Produktnr'];
+      $product_title = $row_items['Name'];
+      $product_price = $row_items['Price'];
+      $product_img = $row_items['image'];
+      $product_desc = $row_items['Description'];
+
+      echo "
+            <figure class='product-container'>
+      			<a href='products.php?viewProduct=$product_id'><img src='$product_img'/></a>
+      				<figcaption>
+        			<h1>$product_title</h1>
+        				<p>$product_desc</p>
+        				<div class='price'>
+          				$product_price:-
+        				</div>
+    						<br>
+                <a href='admin.php?removeProd=$product_id'><button class='add-cart'>Remove product</button></a>
+              </figure>
+          ";
+  }
+}
+function removeProd(){
+  if($_SESSION['usern'] == 'root'){
+    $getUsern = $_SESSION['usern'];
+    if(isset($_GET['removeProd'])){
+      $prod_id = $_GET['removeProd'];
+      $removeProd =  "DELETE FROM assets WHERE Produktnr = $prod_id";
+	  echo "Removed ".$prod_id;
+      mysqli_query($_SESSION['dblink'], $removeProd);
+    }
+  }
+}
+
 ?>

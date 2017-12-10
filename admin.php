@@ -9,9 +9,7 @@ $Name = "Namn";
 $Price = "Pris";
 $Stock = "Lager";
 $Description = "Beskrivning";
-//$image = "Bildnamn";
 $dir = "bikes/";
-//$_FILES["fileToUpload"]["name"] = "";
 $fileToUpload = "";
 //$file = $dir . basename($_FILES["fileToUpload"]["name"]);
 if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -24,7 +22,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   settype($Price, "integer");
   settype($Stock, "integer");
   $sql = "INSERT INTO assets (Name, Price, Stock, Description, image) VALUES ('$Name', $Price, $Stock, '$Description', '$file')";
-  echo $sql;
   mysqli_query($link, $sql);
   mysqli_close($link);
 }
