@@ -26,6 +26,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   mysqli_close($link);
 }
 
+$product_id = "";
+$product_title = "";
+$product_price = "";
+$product_img = "";
+$product_desc = "";
+$product_stock = "";
+
+if(isset($_GET['products'])) {
+  $prodid = $_GET["products"];
+  $sql = "SELECT * FROM assets WHERE Produktnr = $prodid";
+  $run_getProds = mysqli_query($link, $sql);
+  while ($row_items=mysqli_fetch_array($run_getProds)){
+    $product_id = $row_items['Produktnr'];
+    $product_title = $row_items['Name'];
+    $product_price = $row_items['Price'];
+    $product_img = $row_items['image'];
+    $product_desc = $row_items['Description'];
+    $product_stock = $row_items['Stock'];
+  }
+  mysqli_close($link);
+}
+
 
 ?>
 
@@ -34,32 +56,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 <html>
 <body>
 <link rel="stylesheet" href="css/main.css">
-<link rel="stylesheet" href="css/login-register.css">
+<link rel="stylesheet" href="css/admin.css">
 <meta charset="utf-8">
 <title>ADMIN</title>
 </head>
 <body>
 <div class="nav">
-<div class="dropdown">
-  <span><a href="home.php"><img src="images/logo.svg" height="50px" width="50px"/></a></span>
-  <div class="dropdown-content">
-    <a href="login.php">Login</a><br>
-  </div>
-</div>
 <div class="dropdown2">
   <span><a href="#"><img src="images/profile.png" height="50px" width="50px"/></a></span>
   <div class="dropdown-content2">
-    <a href="profile.php">Profile</a><br>
     <a href="logout.php">Logout</a>
   </div>
 </div>
 </div>
 <div class="bread-container">
 
-  <div class="registration-box">
-    <div class="registration-holder">
-      <!-- <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"> -->
+  <div class="function-box">
+    <div class="function-holder">
+      <h1>Add Asset</h1>
       <form action="admin.php" method="post" enctype="multipart/form-data">
+          <input type="file" name="fileToUpload" id="fileToUpload">
+          <br>
+          <br>
           <input type='text' placeholder="Name" name="Name" id='Name' maxlength="50" value="<?php echo $Name; ?>" required/>
           <br>
           <br>
@@ -72,29 +90,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
           <input type='text' placeholder="Description" name="Description" id='Description' maxlength="50" value="<?php echo $Description; ?>" required/>
           <br>
           <br>
-          <!-- <input type='text' placeholder="image" name="image" id='image' maxlength="50" value="<?php echo $image; ?>" required/>
-          <br>
-          <br> -->
-          <input type="file" name="fileToUpload" id="fileToUpload">
-          <!-- <input type="submit" value="Upload" name="submit"> -->
-          <!-- </form> -->
-          <br>
-          <br>
-          <input type="submit" name="Submit" class="button" value="Lägg till">
+          <input type="submit" name="Submit" class="button" value="Add product">
     </form>
+    </div>
+  </div>
+  <div class="function-box">
+    <div class="function-holder">
+      <h1>Edit Asset</h1>
+      <form action="admin.php" method="get" enctype="multipart/form-data">
+        <select name="products">
+          <option value=""></option>
+          <?php getProdName(); ?>
+        </select>
+        <button>Select</button>
+        <?php editProd($product_id, $product_title, $product_price, $product_stock, $product_desc); ?>
+      </form>
     </div>
   </div>
   		<link rel="stylesheet" href="css/products.css">
   	</head>
   	<body>
-  	<div class="nav">
-  	</div>
   		<div class="bread-container">
   			<?php removeItems(); ?>
         <?php removeProd(); ?>
   		</div>
-      <div class="nav">
-      </div>
   	</body>
 </div>
 

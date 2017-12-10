@@ -285,6 +285,7 @@ function removeItems(){
       $product_price = $row_items['Price'];
       $product_img = $row_items['image'];
       $product_desc = $row_items['Description'];
+      $product_stock = $row_items['Stock'];
 
       echo "
             <figure class='product-container'>
@@ -295,7 +296,8 @@ function removeItems(){
         				<div class='price'>
           				$product_price:-
         				</div>
-    						<br>
+                <p>In stock: $product_stock</p>
+                <br>
                 <a href='admin.php?removeProd=$product_id'><button class='add-cart'>Remove product</button></a>
               </figure>
           ";
@@ -310,6 +312,52 @@ function removeProd(){
 	  echo "Removed ".$prod_id;
       mysqli_query($_SESSION['dblink'], $removeProd);
     }
+  }
+}
+
+function getProdName(){
+  $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
+  $getitems = "select * from assets";
+  $run_getitems = mysqli_query($link, $getitems);
+
+  while ($row_items=mysqli_fetch_array($run_getitems)){
+
+    $product_id = $row_items['Produktnr'];
+    $product_title = $row_items['Name'];
+    $product_price = $row_items['Price'];
+    $product_img = $row_items['image'];
+    $product_desc = $row_items['Description'];
+    $product_stock = $row_items['Stock'];
+
+      echo "
+              <option value='$product_id'>$product_title</option>
+      ";
+  }
+}
+
+function editProd($product_id, $product_title, $product_price, $product_stock, $product_desc){
+  $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
+  echo "
+            <input type='text' placeholder='Name' name='Name' id='Name' maxlength='50' value='$product_title'/>
+            <br>
+            <br>
+            <input type='text' placeholder='Price' name='Price' id='Price' maxlength='50' value='$product_price'/>
+            <br>
+            <br>
+            <input type='text' placeholder='Stock' name='Stock' id='Stock' maxlength='50' value='$product_stock'/>
+            <br>
+            <br>
+            <input type='text' placeholder='Description' name='Description' id='Description' maxlength='50' value='$product_desc'/>
+            <br>
+            <br>
+            <input type='hidden' name='hidden' value='$product_id' class='button'></input>
+            <button type='submit' name='change' class='button'>Set Changes</button>
+  ";
+  if(isset($_POST['change'])){
+    $sql = "UPDATE assets SET (Name, Price, Stock, Description) VALUES ($product_title, $product_price, $product_stock, $product_desc) WHERE Produktnr = '$_POST[hidden]'";
+    mysqli_query($_SESSION['dblink'], $sql);
   }
 }
 
