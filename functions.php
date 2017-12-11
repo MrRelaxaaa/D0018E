@@ -196,14 +196,16 @@ function getProductComment(){
 }
 
 function addCart(){
-  if($_SESSION['inloggad'] !== '#'){
-    $getUsern = $_SESSION['usern'];
-    if(isset($_GET['addCart'])){
-      $prod_id = $_GET['addCart'];
-      $getId = "(SELECT Kundnr FROM logins WHERE Username='$getUsern')";
-      $getPrice = "(SELECT Price FROM assets WHERE Produktnr=$prod_id)";
-      $addcart = "INSERT INTO shoppingcart (Kundnr, Produktnr, QTY, Price) VALUES ($getId, $prod_id, 1, $getPrice)";
-      mysqli_query($_SESSION['dblink'], $addcart);
+  if(isset($_SESSION['inloggad'])){
+    if($_SESSION['inloggad'] !== '#'){
+      $getUsern = $_SESSION['usern'];
+      if(isset($_GET['addCart'])){
+        $prod_id = $_GET['addCart'];
+        $getId = "(SELECT Kundnr FROM logins WHERE Username='$getUsern')";
+        $getPrice = "(SELECT Price FROM assets WHERE Produktnr=$prod_id)";
+        $addcart = "INSERT INTO shoppingcart (Kundnr, Produktnr, QTY, Price) VALUES ($getId, $prod_id, 1, $getPrice)";
+        mysqli_query($_SESSION['dblink'], $addcart);
+      }
     }
   }
 }
