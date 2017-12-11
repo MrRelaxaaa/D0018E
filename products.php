@@ -7,20 +7,23 @@ if(isset($_SESSION['usern'])){
 }
 $param_comment = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-	if($_SESSION['inloggad'] != '#'){
-	 	$param_kundnr = "(SELECT Kundnr FROM logins WHERE Username = '".$username2."')";
-   	$param_comment = ($_POST["Comment"]);
-	 	$prod_id = $_SESSION['product_id'];
-   	$sql = "INSERT INTO comments (Produktnr, Comment, Added, Kundnr) VALUES ($prod_id, '$param_comment', now(), $param_kundnr)";
-	 	echo $sql;
-   (mysqli_query($link, $sql));
-  	//Close db connection
-  	mysqli_close($link);
-		header("Location: products.php?viewProduct=$prod_id");
-	}else{
-		header("Location: shop.php");
-	}
+	$prod_id = $_SESSION['product_id'];
+	if(isset($_SESSION['inloggad']) AND $_SESSION['inloggad'] != '#'){
 
+		if($_POST["Comment"] != ""){
+		 	$param_kundnr = "(SELECT Kundnr FROM logins WHERE Username = '".$username2."')";
+	   	$param_comment = ($_POST["Comment"]);
+
+	   	$sql = "INSERT INTO comments (Produktnr, Comment, Added, Kundnr) VALUES ($prod_id, '$param_comment', now(), $param_kundnr)";
+	   (mysqli_query($link, $sql));
+	  	//Close db connection
+	  	mysqli_close($link);
+
+		}
+	}else{
+		header("Location: login.php");
+	}
+header("Location: products.php?viewProduct=$prod_id");
 }
 ?>
 <!-- Kommentar -->
