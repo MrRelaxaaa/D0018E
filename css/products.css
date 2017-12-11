@@ -17,6 +17,7 @@
   -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
+
 .product-container * {
   -webkit-box-sizing: padding-box;
   box-sizing: padding-box;
