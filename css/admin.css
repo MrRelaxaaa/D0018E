@@ -1,13 +1,12 @@
 .function-box{
-  float: left;
   padding-top: 10px;
   background:RGBA(255,255,255,1);
   -webkit-box-shadow:  0px 0px 15px 0px rgba(0, 0, 0, .45);
   box-shadow:  0px 0px 15px 0px rgba(0, 0, 0, .45);
-  height: 54%;
+  height: 55%;
   width: 25%;
-  margin-left:15%;
-  margin-right:4%;
+  margin-left:auto;
+  margin-right:auto;
   border-radius:5px;
 }
 
@@ -48,6 +47,35 @@ input[type=text], input[type=password], input[type=email] {
   font-variant: small-caps;
   width: 100%;
   background-color: #4CAF50;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.button-remove{
+  color: white;
+  font-size: 14px;
+  font-family: sans-serif;
+  font-variant: small-caps;
+  width: 45%;
+  background-color: #801515;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+.button-edit{
+  color: white;
+  font-size: 14px;
+  font-family: sans-serif;
+  font-variant: small-caps;
+  width: 45%;
+  background-color: #F1F167;
   border: none;
   padding: 15px 32px;
   text-align: center;
