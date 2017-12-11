@@ -6,6 +6,7 @@ $username = "";
 $password = "";
 $_SESSION['inloggad'] = "#";
 $_SESSION['cart'] = "#";
+$_SESSION['usern'] = "#";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty(trim($_POST["username"]))){
 		//Don't run else statement if no username entered
@@ -48,7 +49,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                 } else{
 					mysqli_stmt_close($stmt);
-                    echo "User Not Found";
+                    echo '<div class="alert">
+                    <center><strong>User not found!</strong> Please enter proper user data or register a new user!</center>
+                    </div>';
                 }
             } else{
 

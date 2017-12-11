@@ -26,6 +26,11 @@ function getitems(){
   $_SESSION['dblink'] = $link;
   $getitems = "select * from assets";
   $run_getitems = mysqli_query($link, $getitems);
+  /* Redirect guest to loign page if not loggedd in*/
+  $addCarthref = 'shop.php?addCart=';
+  if(!isset($_SESSION['usern']) or $_SESSION['usern'] == "#"){
+    $addCarthref = 'login.php?=';
+  }
   while ($row_items=mysqli_fetch_array($run_getitems)){
 
       $product_id = $row_items['Produktnr'];
@@ -46,7 +51,7 @@ function getitems(){
         				</div>
                 <p>In stock: $product_stock</p>
                 <br>
-                <a href='shop.php?addCart=$product_id'><button class='add-cart'>Add to cart</button></a>
+                <a href='$addCarthref$product_id'><button class='add-cart'>Add to cart</button></a>
               </figure>
           ";
   }
@@ -196,14 +201,26 @@ function getProductComment(){
 }
 
 function addCart(){
-  if($_SESSION['inloggad'] !== '#'){
-    $getUsern = $_SESSION['usern'];
-    if(isset($_GET['addCart'])){
-      $prod_id = $_GET['addCart'];
-      $getId = "(SELECT Kundnr FROM logins WHERE Username='$getUsern')";
-      $getPrice = "(SELECT Price FROM assets WHERE Produktnr=$prod_id)";
-      $addcart = "INSERT INTO shoppingcart (Kundnr, Produktnr, QTY, Price) VALUES ($getId, $prod_id, 1, $getPrice)";
-      mysqli_query($_SESSION['dblink'], $addcart);
+  if(isset($_SESSION['inloggad'])){
+    if($_SESSION['inloggad'] !== '#'){
+      $getUsern = $_SESSION['usern'];
+      $getCart = "(SELECT Produktnr FROM shoppingcart)";
+      $sql = mysqli_query($_SESSION['dblink'], $getCart);
+      if(isset($_GET['addCart'])){
+        $prod_id = $_GET['addCart'];
+        $check = false;
+        while ($row_items=mysqli_fetch_array($sql)){
+          if($prod_id === $row_items['Produktnr']){
+            $check = true;
+          }
+        }
+        if($check !== true){
+          $getId = "(SELECT Kundnr FROM logins WHERE Username='$getUsern')";
+          $getPrice = "(SELECT Price FROM assets WHERE Produktnr=$prod_id)";
+          $addcart = "INSERT INTO shoppingcart (Kundnr, Produktnr, QTY, Price) VALUES ($getId, $prod_id, 1, $getPrice)";
+          mysqli_query($_SESSION['dblink'], $addcart);
+        }
+      }
     }
   }
 }
@@ -310,7 +327,6 @@ function removeProd(){
     if(isset($_GET['removeProd'])){
       $prod_id = $_GET['removeProd'];
       $removeProd =  "DELETE FROM assets WHERE Produktnr = $prod_id";
-	  echo "Removed ".$prod_id;
       mysqli_query($_SESSION['dblink'], $removeProd);
     }
   }

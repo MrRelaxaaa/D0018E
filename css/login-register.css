@@ -9,6 +9,11 @@
   margin-right:auto;
   border-radius:5px;
 }
+.alert {
+    padding: 20px;
+    background-color: #ff9800;
+    color: white;
+}
 
 .registration-box{
   padding-top: 20px;
