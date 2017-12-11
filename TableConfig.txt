@@ -12,7 +12,7 @@ create table users (
 	Lastname varchar(255),
 	Email varchar(255),
 	Address varchar(255),
-	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr)
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr) ON DELETE CASCADE
 )
 
 
@@ -20,10 +20,11 @@ create table assets (
 	Produktnr int PRIMARY KEY AUTO_INCREMENT,
 	Name varchar(255),
 	Price int,
-	Rating int,
 	Stock int,
 	Description varchar(255),
-	image varchar(255)
+	image varchar(255),
+	likes int(11) default 0,
+	dislikes int(11) default 0 
 )
 
 create table comments (
@@ -32,24 +33,19 @@ create table comments (
 	Comment varchar(255),
 	Added DATETIME,
 	Kundnr int,
-	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr),
-	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr)
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr) ON DELETE CASCADE,
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr) ON DELETE CASCADE 
 )
 
 
-create table assetimages(
-	Produktnr int PRIMARY KEY,
-	url varchar(255),
-	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
-)
 
 create table hasliked(
-	RatingID int PRIMARY KEY AUTO_INCREMENT,
 	Produktnr int,
 	Kundnr int,
 	Liked BOOLEAN DEFAULT NULL,
-	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr),
-	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr)
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr) ON DELETE CASCADE,
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr) ON DELETE CASCADE,
+	PRIMARY KEY (Produktnr, Kundnr)
 )
 
 create table shoppingcart (
@@ -57,9 +53,9 @@ create table shoppingcart (
 	Kundnr int NOT NULL,
 	Produktnr int NOT NULL,
 	QTY int,
-	Date varchar(255),
-	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr),
-	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+	Price int,
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr) ON DELETE CASCADE,
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr) ON DELETE CASCADE
 )
 
 create table userorder (
@@ -67,8 +63,8 @@ create table userorder (
 	Produktnr int,
 	QTY int,
 	Price int,
-	Date varchar(255),
+	Dates DATETIME,
 	Kundnr int,
-	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr),
-	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr)
+	FOREIGN KEY (Kundnr) REFERENCES logins(Kundnr) ON DELETE CASCADE,
+	FOREIGN KEY (Produktnr) REFERENCES assets(Produktnr) ON DELETE CASCADE
 )

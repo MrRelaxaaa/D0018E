@@ -5,7 +5,7 @@
   margin-left: auto;
   margin-right: auto;
   width: 45%;
-  height: 26%;
+  height: 32%;
 }
 
 .product-rating-icon{
@@ -29,7 +29,7 @@
 
 .img-container{
   float: left;
-  height: 100%;
+  height: 80%;
   width: 45%;
 }
 
@@ -150,4 +150,20 @@
   font-size: 0.9em;
   letter-spacing: 1px;
   font-weight: 300;
+}
+
+.add-cart{
+  color: white;
+  font-size: 14px;
+  font-family: sans-serif;
+  font-variant: small-caps;
+  width: 70%;
+  height: 18%;
+  background-color: #4CAF50;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
 }

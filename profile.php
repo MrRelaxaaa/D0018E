@@ -51,7 +51,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			</div>
 		</div>
 		<div class="cart">
-			<a href="#"><img src="images/basket.ico" height="50px" width="50px"/></a>
+			<a href="shopping-cart.php"><img src="images/basket.ico" height="50px" width="50px"/></a>
 		</div>
 	</div>
 		<div class="bread-container">

@@ -34,6 +34,7 @@ check_sess();
 	</div>
 		<div class="bread-container">
       <?php getOrder(); ?>
+			<?php addOrder(); ?>
 			<?php removeCart(); ?>
 		</div>
 	</body>

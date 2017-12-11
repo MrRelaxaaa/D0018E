@@ -33,6 +33,7 @@ function getitems(){
       $product_price = $row_items['Price'];
       $product_img = $row_items['image'];
       $product_desc = $row_items['Description'];
+      $product_stock = $row_items['Stock'];
 
       echo "
             <figure class='product-container'>
@@ -43,7 +44,8 @@ function getitems(){
         				<div class='price'>
           				$product_price:-
         				</div>
-    						<br>
+                <p>In stock: $product_stock</p>
+                <br>
                 <a href='shop.php?addCart=$product_id'><button class='add-cart'>Add to cart</button></a>
               </figure>
           ";
@@ -60,6 +62,10 @@ function getOrder(){
   $getProdnr = "SELECT Produktnr, CartID FROM shoppingcart WHERE Kundnr = ($getId)";
   $run_getProdnr= mysqli_query($link, $getProdnr);
   $total_price = 0;
+  if(isset($_POST['set'])){
+    $sql = "UPDATE shoppingcart SET QTY = '$_POST[quantity]' WHERE Produktnr = '$_POST[hidden]'";
+    mysqli_query($_SESSION['dblink'], $sql);
+  }
   while($rowitems = mysqli_fetch_array($run_getProdnr)){
      $cart_id = $rowitems['CartID'];
      $prod = $rowitems['Produktnr'];
@@ -72,14 +78,18 @@ function getOrder(){
         $product_price = $row_items['Price'];
         $product_img = $row_items['image'];
         $product_desc = $row_items['Description'];
-        $total_price = $total_price + $product_price;
+        $product_stock = $row_items['Stock'];
+        $getQTY = "SELECT * FROM shoppingcart WHERE Produktnr=$product_id";
+        $quantity = mysqli_query($_SESSION['dblink'], $getQTY);
+        $getamount = mysqli_fetch_assoc($quantity);
+        $total_price = $total_price + ($product_price * $getamount['QTY']);
 
         echo "
                 <div class='shopping-cart'>
                   <div class='asset-image'>
                     <img src='$product_img' width='174px' height='130px'/>
                   </div>
-                  <div class='asset-desc'>
+                    <div class='asset-desc'>
                     <h1>$product_title</h1>
                     <p>$product_desc</p>
                   </div>
@@ -87,10 +97,14 @@ function getOrder(){
                     <h1>Price</h1>
                     <p>$product_price kr</p>
                   </div>
+                  <form method='post' action='shopping-cart.php'>
                   <div class='quantity'>
                     <h1>Amount</h1>
-                      <p>1</p>
+                      <input type='number' value=".$getamount['QTY']." name='quantity' min='1' max='$product_stock' style='font: 16pt Courier; width: 3ch; height: 1em'/>
+                      <input type='hidden' name='hidden' value='$product_id'></input>
+                      <button type='submit' name='set'>set</button>
                 </div>
+                </form>
                 <div class='remove'>
                   <a href='shopping-cart.php?removeCart=$cart_id'><img src='images/remove.png'/></a>
                 </div>
@@ -104,11 +118,10 @@ function getOrder(){
               <h1>Total</h1>
               <p>$total_price kr</p>
             </div>
-            <input type='submit' name='Submit' class='order-button' value='Order'/>
+            <a href='shopping-cart.php?placeOrder=$getUsern'><input type='submit' class='order-button' value='Order'/></a>
           </div>
   ";
 }
-#<input type='number' name='quantity' min='1' max='10' style='font: 24pt Courier; width: 3ch; height: 1em'/> quantity!!
 
 function getProductpage(){
   $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
@@ -120,10 +133,12 @@ function getProductpage(){
     $run_get_prod= mysqli_query($link, $get_prod);
     while ($row_items=mysqli_fetch_array($run_get_prod)){
 
+       $product_id = $row_items['Produktnr'];
        $product_title = $row_items['Name'];
        $product_price = $row_items['Price'];
        $product_img = $row_items['image'];
        $product_desc = $row_items['Description'];
+       $product_stock = $row_items['Stock'];
        $product_likes = $row_items['likes'];
        $product_dislikes = $row_items['dislikes'];
 
@@ -131,19 +146,22 @@ function getProductpage(){
                <div class='product-container'>
                  <div class='img-container'>
                    <img src='$product_img'/>
+                   <div class='product-description'>
+                     <h1>$product_title</h1>
+                     </div>
                  </div>
                 <div class='vl'></div>
                  <div class='product-description'>
-                   <h1>$product_title</h1>
                    <p>$product_desc</p>
+                   <p>In stock: $product_stock</p>
                    <p>$product_price kr</p>
-                   <br>
                    <div class='product-rating-icon'>
-                   <img src='images/up.png'/>
-                   <img src='images/down.png'/>
+                   <a href='likehelper.php?liked=like'><img src='images/up.png'/></a>
+                   <a href='likehelper.php?liked=dislike'><img src='images/down.png'/></a>
                    <br>
                    <p>$product_likes liked | $product_dislikes disliked</p>
                    </div>
+                   <a href='shop.php?addCart=$product_id'><button class='add-cart'>Add to cart</button></a>
                  </div>
                </div>
        ";
@@ -183,7 +201,8 @@ function addCart(){
     if(isset($_GET['addCart'])){
       $prod_id = $_GET['addCart'];
       $getId = "(SELECT Kundnr FROM logins WHERE Username='$getUsern')";
-      $addcart = "INSERT INTO shoppingcart (Kundnr, Produktnr, QTY) VALUES ($getId, $prod_id, 1)";
+      $getPrice = "(SELECT Price FROM assets WHERE Produktnr=$prod_id)";
+      $addcart = "INSERT INTO shoppingcart (Kundnr, Produktnr, QTY, Price) VALUES ($getId, $prod_id, 1, $getPrice)";
       mysqli_query($_SESSION['dblink'], $addcart);
     }
   }
@@ -201,11 +220,45 @@ function removeCart(){
   }
 }
 
+function addOrder(){
+  if($_SESSION['inloggad'] !== '#'){
+    if(isset($_GET['placeOrder'])){
+      $username = $_GET['placeOrder'];
+      $getId = "(SELECT Kundnr FROM logins WHERE Username='$username')";
+      $add_order = "INSERT INTO userorder (Kundnr, Produktnr, QTY, Dates, Price) SELECT s.Kundnr, s.Produktnr, s.QTY, now(), a.Price FROM (SELECT * FROM shoppingcart WHERE Kundnr = $getId) s JOIN assets a ON a.Produktnr = s.Produktnr";
+
+      $get_prod = "SELECT Produktnr FROM shoppingcart WHERE Kundnr=$getId";
+      $run_get_prod= mysqli_query($_SESSION['dblink'], $get_prod);
+      while($array = mysqli_fetch_array($run_get_prod, MYSQLI_NUM)){
+        $value = $array[0];
+        $qty = "(SELECT QTY FROM shoppingcart WHERE Produktnr = $value)";
+        $stock = "(SELECT Stock FROM assets WHERE Produktnr = $value)";
+        $qty_sql = mysqli_query($_SESSION['dblink'], $qty);
+        $stock_sql = mysqli_query($_SESSION['dblink'], $stock);
+        $QTY_array = mysqli_fetch_array($qty_sql, MYSQLI_NUM);
+        $stock_array = mysqli_fetch_array($stock_sql, MYSQLI_NUM);
+        if($QTY_array[0]> $stock_array[0]){
+          return 0;
+        }
+      }
+      $run_get_prod= mysqli_query($_SESSION['dblink'], $get_prod);
+      while($array = mysqli_fetch_array($run_get_prod, MYSQLI_NUM)){
+        $value = $array[0];
+        $orderQTY = "(SELECT QTY FROM shoppingcart WHERE Produktnr = $value)";
+        $subtract_asset_qty = "UPDATE assets SET Stock = Stock - $orderQTY WHERE Produktnr = $value";
+        mysqli_query($_SESSION['dblink'], $subtract_asset_qty);
+      }
+
+      mysqli_query($_SESSION['dblink'], $add_order);
+
+      $removecart = "DELETE FROM shoppingcart WHERE Kundnr=$getId";
+      mysqli_query($_SESSION['dblink'], $removecart);
+    }
+  }
+}
+
 function getProfile($username, $link){
-  //include 'config.php';
-  //  echo $link;
   $query = "SELECT firstname, lastname, address FROM users WHERE Kundnr = (SELECT Kundnr FROM logins WHERE Username = '" . $username . "')";
-  #test log in : Echo "Logged in as: " .$username2;
   $test = (mysqli_query($link, $query));
 	while($kundnr = mysqli_fetch_assoc($test)){
  		$firstname = $kundnr['firstname'];
@@ -216,6 +269,131 @@ function getProfile($username, $link){
   $out['l'] = $lastname;
   $out['a'] = $address;
   return $out;
+}
+
+function removeItems(){
+  /* Attempt to connect to MySQL database */
+  $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
+  $getitems = "select * from assets";
+  $run_getitems = mysqli_query($link, $getitems);
+  while ($row_items=mysqli_fetch_array($run_getitems)){
+
+      $product_id = $row_items['Produktnr'];
+      $product_title = $row_items['Name'];
+      $product_price = $row_items['Price'];
+      $product_img = $row_items['image'];
+      $product_desc = $row_items['Description'];
+      $product_stock = $row_items['Stock'];
+
+      echo "
+            <figure class='product-container'>
+      			<a href='products.php?viewProduct=$product_id'><img src='$product_img'/></a>
+      				<figcaption>
+        			<h1>$product_title</h1>
+        				<p>$product_desc</p>
+        				<div class='price'>
+          				$product_price:-
+        				</div>
+                <p>In stock: $product_stock</p>
+                <br>
+                <a href='admin.php?removeProd=$product_id'><button class='button-remove'>Remove</button></a>
+                <a href='editProduct.php?editProd=$product_id'><button class='button-edit'>Edit</button></a>
+              </figure>
+          ";
+  }
+}
+
+function removeProd(){
+  if($_SESSION['usern'] == 'root'){
+    $getUsern = $_SESSION['usern'];
+    if(isset($_GET['removeProd'])){
+      $prod_id = $_GET['removeProd'];
+      $removeProd =  "DELETE FROM assets WHERE Produktnr = $prod_id";
+	  echo "Removed ".$prod_id;
+      mysqli_query($_SESSION['dblink'], $removeProd);
+    }
+  }
+}
+
+function editProd(){
+  $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
+  if($_SESSION['usern'] == 'root'){
+    $getUsern = $_SESSION['usern'];
+    if(isset($_POST['change'])){
+      $sql = "UPDATE assets SET Name = '$_POST[Name]', Price = '$_POST[Price]', Stock = '$_POST[Stock]', Description = '$_POST[Description]' WHERE Produktnr = '$_POST[hidden]'";
+      mysqli_query($_SESSION['dblink'], $sql);
+    }
+    if(isset($_GET['editProd'])){
+      $prod_id = $_GET['editProd'];
+      $query = "SELECT * FROM assets WHERE Produktnr = $prod_id";
+      $sql = (mysqli_query($_SESSION['dblink'], $query));
+
+    	while($row = mysqli_fetch_assoc($sql)){
+        $prod_num = $row['Produktnr'];
+     		$prod_name = $row['Name'];
+     		$prod_price = $row['Price'];
+     		$prod_desc = $row['Description'];
+        $prod_stock = $row['Stock'];
+
+        echo "
+              <div class='function-box'>
+                <div class='function-holder'>
+                  <h1>Edit $prod_name</h1>
+                  <form action='editProduct.php?editProd=$prod_num' method='post'>
+                      <input type='text' placeholder='Name' name='Name' id='Name' maxlength='50' value='$prod_name' required/>
+                      <br>
+                      <br>
+                      <input type='text' placeholder='Price' name='Price' id='Price' maxlength='50' value='$prod_price' required/>
+                      <br>
+                      <br>
+                      <input type='text' placeholder='Stock' name='Stock' id='Stock' maxlength='50' value='$prod_stock' required/>
+                      <br>
+                      <br>
+                      <input type='text' placeholder='Description' name='Description' id='Description' maxlength='50' value='$prod_desc' required/>
+                      <br>
+                      <br>
+                      <input type='hidden' name='hidden' value='$prod_num'></input>
+                      <button type='submit' name='change' class='button'>Set changes</button>
+                </form>
+                </div>
+              </div>
+        ";
+      }
+    }
+  }
+}
+
+function showItems(){
+  /* Attempt to connect to MySQL database */
+  $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+  $_SESSION['dblink'] = $link;
+  $getitems = "select * from assets";
+  $run_getitems = mysqli_query($link, $getitems);
+  while ($row_items=mysqli_fetch_array($run_getitems)){
+
+      $product_id = $row_items['Produktnr'];
+      $product_title = $row_items['Name'];
+      $product_price = $row_items['Price'];
+      $product_img = $row_items['image'];
+      $product_desc = $row_items['Description'];
+      $product_stock = $row_items['Stock'];
+
+      echo "
+            <figure class='product-container'>
+      			<img src='$product_img'/>
+      				<figcaption>
+        			<h1>$product_title</h1>
+        				<p>$product_desc</p>
+        				<div class='price'>
+          				$product_price:-
+        				</div>
+                <p>In stock: $product_stock</p>
+                <br>
+              </figure>
+          ";
+  }
 }
 
 ?>
