@@ -26,6 +26,11 @@ function getitems(){
   $_SESSION['dblink'] = $link;
   $getitems = "select * from assets";
   $run_getitems = mysqli_query($link, $getitems);
+  /* Redirect guest to loign page if not loggedd in*/
+  $addCarthref = 'shop.php?addCart=';
+  if(!isset($_SESSION['usern']) or $_SESSION['usern'] == "#"){
+    $addCarthref = 'login.php?=';
+  }
   while ($row_items=mysqli_fetch_array($run_getitems)){
 
       $product_id = $row_items['Produktnr'];
@@ -46,7 +51,7 @@ function getitems(){
         				</div>
                 <p>In stock: $product_stock</p>
                 <br>
-                <a href='shop.php?addCart=$product_id'><button class='add-cart'>Add to cart</button></a>
+                <a href='$addCarthref$product_id'><button class='add-cart'>Add to cart</button></a>
               </figure>
           ";
   }
